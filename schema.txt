@@ -1,0 +1,50 @@
+CREATE TABLE users (
+        zid INTEGER NOT NULL,
+        email TEXT NOT NULL,
+        username TEXT NOT NULL,
+        hash TEXT NOT NULL,
+        PRIMARY KEY(zid)
+    );
+
+CREATE TABLE rooms (
+        id INTEGER NOT NULL,
+        college_id INT NOT NULL,
+        room_name TEXT NOT NULL,
+        room_type TEXT,
+        PRIMARY KEY(id),
+        FOREIGN KEY(college_id) REFERENCES colleges(id)
+    );
+
+CREATE TABLE colleges (
+        id INTEGER NOT NULL,
+        college_name TEXT NOT NULL,
+        PRIMARY KEY(id)
+    );
+
+CREATE TABLE preferences (
+        zid INT NOT NULL,
+        room_id INT NOT NULL,
+        rank INT NOT NULL,
+        FOREIGN KEY(zid) REFERENCES users(zid),
+        FOREIGN KEY(room_id) REFERENCES rooms(id)
+    );
+
+CREATE TRIGGER preferences__increment_rank_before_insertion
+BEFORE INSERT ON preferences
+FOR EACH ROW
+BEGIN
+    UPDATE preferences
+    SET rank = rank + 1
+    WHERE zid = NEW.zid
+    AND rank >= NEW.rank;
+END;
+
+CREATE TRIGGER preferences__decrement_rank_after_deletion
+AFTER DELETE ON preferences
+FOR EACH ROW
+BEGIN
+    UPDATE preferences
+    SET rank = rank - 1
+    WHERE zid = OLD.zid
+    AND rank > OLD.rank;
+END;
