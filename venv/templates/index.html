@@ -1,3 +1,9 @@
 {% extends "layout.html" %}
 
+{% block main %}
 Index
+{% if current_user.is_authenticated %}
+hello, {{ current_user.zid }}
+{% endif %}
+{% endblock %}
+
