@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 from . import db
 
 class User(UserMixin, db.Model):
@@ -33,7 +34,7 @@ class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_name = db.Column(db.String, nullable=False)
     room_type = db.Column(db.String)
-    preferences = db.relationship('Preference', backref='room', lazy=True)
+    # preferences = db.relationship('Preference', backref='room', lazy=True)
     
     college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'),
         nullable=False)
@@ -49,5 +50,5 @@ class Preference(db.Model):
         nullable=False)
     user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'),
         nullable=False)
+    room=db.relationship('Room', backref='preference', lazy='joined', innerjoin=True)
         
-
