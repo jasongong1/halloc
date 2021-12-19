@@ -16,11 +16,11 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import users
+    from .models import User
 
     @login_manager.user_loader
     def load_user(zid):
-        return users.query.get(int(zid))
+        return User.query.get(int(zid))
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)

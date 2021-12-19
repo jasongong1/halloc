@@ -19,13 +19,11 @@ function format_zid() {
     if (/^z/.test(my_zid)) {
         document.getElementsByName('zid')[0].value = my_zid.substring(1);
     }
+    console.log(document.getElementsByName('zid')[0].value);
 }
 
-document.onload = function() {
-    if (!!document.getElementById("register-form")) {
-        document.getElementById("register-form").onsubmit = format_zid;
-    }
-    if (!!document.getElementById("login-form")) {
-        document.getElementById("login-form").onsubmit = format_zid;    
+window.onload = function() {
+    if (!!document.getElementById("form-signin")) {
+        document.getElementById("form-signin").onsubmit = format_zid;
     }
 }

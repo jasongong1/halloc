@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import users
+from .models import User
 
 auth = Blueprint('auth', __name__)
 
@@ -21,7 +21,7 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
-    user = users.query.filter_by(zid=zid).first()
+    user = User.query.filter_by(zid=zid).first()
 
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
@@ -41,22 +41,25 @@ def register_post():
     zid = request.form.get('zid')
     password = request.form.get('password')
     email = request.form.get('email')
+    remember = True if request.form.get('remember') else False
 
-    user = users.query.filter_by(zid=zid).first()
+    user = User.query.filter_by(zid=zid).first()
 
     if user:
         flash('user already exists', 'warning')
         return redirect(url_for('auth.register'))
 
-    new_user = users(
+    new_user = User(
         zid=zid, 
         email=f"z{zid}@unsw.edu.au" if not email else email,
         hash=generate_password_hash(password, method='sha256'))
     
     db.session.add(new_user)
     db.session.commit()
+
+    login_user(new_user, remember=remember)
     
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('main.home'))
 
 @auth.route('/logout')
 @login_required

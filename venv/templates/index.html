@@ -1,9 +1,35 @@
 {% extends "layout.html" %}
 
 {% block main %}
-Index
-{% if current_user.is_authenticated %}
-hello, {{ current_user.zid }}
-{% endif %}
+<h3>
+    INDEX WIP
+</h3>
+<p>
+    hello, {{ current_user.zid }}
+</p>
+<div id="interactive-app-wrapper" class="">
+    <div id="room-chosen-list" class="">
+        chosen rooms
+        <ul id="preference-list">
+            {% for preference in preferences %}
+            <li class="preference-list-elem">
+                {{ preference.room_name }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="room-selector" class="">
+        room selector
+    </div>
+</div>
+
+<div>
+    halp :<
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script type="text/javascript" src='/static/index.js'></script>
 {% endblock %}
 

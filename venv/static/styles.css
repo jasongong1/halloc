@@ -14,21 +14,21 @@
     clip-path: inset(50%);
     border: 0;
 }
-.form-signin {
+#form-signin {
     padding: 20px;
     width: 400px;
 }
-.form-signin .form-control {
+#form-signin .form-control {
     position: relative;
     box-sizing: border-box;
     height: auto;
     padding: 10px;
     font-size: 16px;
 }
-.form-signin .form-control:focus {
+#form-signin .form-control:focus {
     z-index: 2;
 }
-.form-signin button[type=submit] {
+#form-signin button[type=submit] {
     margin: 15px;
 }
 .form-control {
@@ -51,4 +51,33 @@ input[name="password"].form-control {
 .navbar {
     padding-left: 20px;
     padding-right: 20px;
+}
+
+#room-chosen-list, #room-selector {
+    background-color: rgb(240, 240, 240);
+    padding: 10px;
+}
+
+#interactive-app-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 30px;
+    margin: 30px;
+    background-color: turquoise;
+    height: calc(100vh - 120px);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+background: rgb(228, 228, 228);
+margin: 1px;
+padding: 5px 10px;
+}
+
+.sortable-ghost {
+opacity: .6;
 }
