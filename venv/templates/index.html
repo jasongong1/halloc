@@ -10,24 +10,26 @@
 <div id="interactive-app-wrapper" class="">
     <div id="room-chosen-list" class="">
         chosen rooms
-        <thead>
-            <tr>
-                <th>room name</th>
-                <th>rank</th>
-            </tr>
-        </thead>
-        <tbody id="preference-list">
-            {% for preference in preferences %}
-            <tr class="preference-list-row">
-                <td>
-                    {{ preference.room.room_name }}
-                </td>
-                <td>
-                    {{ preference.rank }}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">rank</th>
+                    <th scope="col">room name</th>
+                </tr>
+            </thead>
+            <tbody id="preference-list">
+                {% for preference in preferences %}
+                <tr class="preference-list-row">
+                    <th scope="row">
+                        {{ preference.rank }}
+                    </th>
+                    <td>
+                        {{ preference.room.room_name }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div id="room-selector" class="">
         room selector

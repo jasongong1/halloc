@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from . import db
 from .models import Preference, Room
@@ -8,9 +8,6 @@ main = Blueprint('main', __name__)
 @main.route('/home')
 @login_required
 def home():
-    # preferences = Room.query.join(Preference, Room.id==Preference.room_id).filter_by(user_zid=current_user.zid).all()
-    # print(list(map(lambda i : i.rank, preferences)))
-    # print(list(map(lambda i : i.rank, Preference.query.all())))
     preferences = Preference.query.filter_by(user_zid=current_user.zid).all()
     return render_template("index.html", preferences=preferences)
 
@@ -21,4 +18,18 @@ def index():
 @main.route('/delete_preference', methods=['DELETE'])
 @login_required
 def delete_preference():
-    rooms = Room.query.join(Preference).filter_by(user_zid=current_user.zid).all()
+    req_json = request.get_json()
+    print(req_json['room_name'].strip())
+    print(req_json['rank'].strip())
+    print("test")
+    print("test")
+    print("test")
+    print("test")
+    to_delete = Preference.query.join(Room, Preference.room_id==Room.id).filter(
+        Room.room_name==req_json['room_name'].strip(),
+        Preference.user_zid==current_user.zid,
+        Preference.rank==req_json['rank'].strip(),
+        ).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    return ('', 204)
