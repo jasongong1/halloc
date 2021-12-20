@@ -3,11 +3,16 @@ window.onload = function() {
     var preference_list_sortable = Sortable.create(document.getElementById('preference-list'), {
         group: 'preference-list-group',
         animation: 100,
-        onEnd: function (evt) {
+        onEnd: async function (evt) {
+            preference_list_sortable.option("disabled", true)
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
             if (true || evt.from == preference_list_sortable) {
-                delete_request(evt.item);
+                await delete_request(evt.item);
             }
-            insert_request(evt.item, evt.newIndex + 1);
+            await insert_request(evt.item, evt.newIndex + 1);
+            // TODO: refresh table
+            preference_list_sortable.option("disabled", false)
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00"; 
         }
     });
 }

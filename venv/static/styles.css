@@ -63,7 +63,7 @@ input[name="password"].form-control {
     grid-template-columns: repeat(2, 1fr);
     column-gap: 30px;
     margin: 30px;
-    background-color: turquoise;
+    background-color: rgb(0, 255, 0);
     height: calc(100vh - 120px);
 }
 

@@ -8,7 +8,7 @@ main = Blueprint('main', __name__)
 @main.route('/home')
 @login_required
 def home():
-    preferences = Preference.query.filter_by(user_zid=current_user.zid).all()
+    preferences = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
     return render_template("index.html", preferences=preferences)
 
 @main.route('/')
