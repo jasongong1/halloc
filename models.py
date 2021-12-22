@@ -18,17 +18,25 @@ class College(db.Model):
     __tablename__ = 'colleges'
     id = db.Column(db.Integer, primary_key=True)
     college_name = db.Column(db.String)
-    rooms = db.relationship('Room', backref='college', lazy=True)
-    floors = db.relationship('Floor', backref='college', lazy=True)
+    # rooms = db.relationship('Room', backref='college_room', lazy=True)
+    # floors = db.relationship('Floor', backref='college_floor', lazy=True)
 
 
 class Floor(db.Model):
     __tablename__ = 'floors'
     id = db.Column(db.Integer, primary_key=True)
     floor_level = db.Column(db.String)
-    rooms = db.relationship('Room', backref='floor', lazy=True)
+    # rooms = db.relationship('Room', backref='floor_room', lazy=True)
+
     college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'),
         nullable=False)
+    college=db.relationship('College', backref='floor_college', lazy='joined', innerjoin=True)
+
+class UserCollegeJoin(db.Model):
+    __tablename__ = 'user_college_join'
+    id = db.Column(db.Integer, primary_key=True)
+    user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'), nullable=False)
+    college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'), nullable=False)
 
 @dataclass
 class Room(db.Model):
@@ -49,6 +57,9 @@ class Room(db.Model):
     floor_id = db.Column(db.Integer, db.ForeignKey('floors.id'),
         nullable=False)
 
+    floor=db.relationship('Floor', backref='room', lazy='joined', innerjoin=True)
+    
+
 @dataclass
 class Preference(db.Model):
     id: int
@@ -66,8 +77,5 @@ class Preference(db.Model):
     user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'),
         nullable=False)
     room=db.relationship('Room', backref='preference', lazy='joined', innerjoin=True)
-    # def as_dict(self):
-    #     return {
-    #         col.name: getattr(self, col.name) for col in self.__table__.columns
-    #     }
+    
         

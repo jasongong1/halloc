@@ -51,14 +51,20 @@ async function update_table(table_id) {
             return;
         }
         table.textContent='';
+        // console.log(data.preference_list);
         data.preference_list.forEach((preference) => {
             var curr_row = table.insertRow(-1);
-            var header_cell = document.createElement("TH");
-            header_cell.innerHTML = preference.rank;
-            header_cell.scope = "row";
-            curr_row.appendChild(header_cell);
+            var header_cell_rank = document.createElement("TH");
+            header_cell_rank.innerHTML = preference.rank;
+            header_cell_rank.scope = "row";
+            curr_row.appendChild(header_cell_rank);
+
             var room_name_cell = curr_row.insertCell(-1);
-            room_name_cell.innerHTML = preference.room.room_name;
+            room_name_cell.innerHTML = preference.room_name;
+            var floor_cell = curr_row.insertCell(-1);
+            floor_cell.innerHTML = preference.floor_level;
+            var college_cell = curr_row.insertCell(-1);
+            college_cell.innerHTML = preference.college_name;
         });
     })
 }

@@ -52,6 +52,14 @@ def insert_preference():
 @main.route('/get_updated_table')
 @login_required
 def get_updated_table():
+    preferences = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
+    # print(str(preferences))
+    preferences_list = [{
+        'rank': p.rank,
+        'room_name': p.room.room_name,
+        'floor_level': p.room.floor.floor_level,
+        'college_name': p.room.floor.college.college_name
+    } for p in preferences]
     return jsonify({
-        'preference_list': Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
+        'preference_list': preferences_list
     })
