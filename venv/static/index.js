@@ -1,6 +1,6 @@
 window.onload = function() {
     console.log('window loaded');
-    var preference_list_sortable = Sortable.create(document.getElementById('preference-list'), {
+    var preference_list_sortable = Sortable.create(document.getElementById('preference-table-body'), {
         group: 'preference-list-group',
         animation: 100,
         onEnd: async function (evt) {
@@ -10,7 +10,7 @@ window.onload = function() {
                 await delete_request(evt.item);
             }
             await insert_request(evt.item, evt.newIndex + 1);
-            // TODO: refresh table
+            update_table('preference-table-body');
             preference_list_sortable.option("disabled", false)
             document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00"; 
         }
@@ -18,10 +18,10 @@ window.onload = function() {
 }
 
 async function delete_request(el) {
-    let response = await fetch("/delete_preference", {
+    await fetch("/delete_preference", {
         method: "DELETE",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
+        body: JSON.stringify({ 
             'rank': el.cells[0].innerHTML,
             'room_name': el.cells[1].innerHTML
         })
@@ -38,4 +38,27 @@ async function insert_request(el, rank) {
             'room_name': el.cells[1].innerHTML
         })
     });
+}
+
+async function update_table(table_id) {
+    await fetch("/get_updated_table", {
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        var table=document.getElementById(table_id);
+        if (!table) {
+            return;
+        }
+        table.textContent='';
+        data.preference_list.forEach((preference) => {
+            var curr_row = table.insertRow(-1);
+            var header_cell = document.createElement("TH");
+            header_cell.innerHTML = preference.rank;
+            header_cell.scope = "row";
+            curr_row.appendChild(header_cell);
+            var room_name_cell = curr_row.insertCell(-1);
+            room_name_cell.innerHTML = preference.room.room_name;
+        });
+    })
 }

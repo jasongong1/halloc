@@ -8,16 +8,16 @@
     hello, {{ current_user.zid }}
 </p>
 <div id="interactive-app-wrapper" class="">
-    <div id="room-chosen-list" class="">
+    <div id="room-chosen-wrapper" class="">
         chosen rooms
-        <table class="table">
+        <table class="table" id="preferences-table">
             <thead>
                 <tr>
                     <th scope="col">rank</th>
                     <th scope="col">room name</th>
                 </tr>
             </thead>
-            <tbody id="preference-list">
+            <tbody id="preference-table-body">
                 {% for preference in preferences %}
                 <tr class="preference-list-row">
                     <th scope="row">

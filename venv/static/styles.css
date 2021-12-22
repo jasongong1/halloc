@@ -53,7 +53,7 @@ input[name="password"].form-control {
     padding-right: 20px;
 }
 
-#room-chosen-list, #room-selector {
+#room-chosen-wrapper, #room-selector {
     background-color: rgb(240, 240, 240);
     padding: 10px;
 }

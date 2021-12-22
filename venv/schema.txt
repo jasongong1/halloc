@@ -61,3 +61,5 @@ BEGIN
     WHERE user_zid = OLD.user_zid
     AND rank > OLD.rank;
 END;
+
+==================== for testing, init a small db

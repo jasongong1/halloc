@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, json, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
+from sqlalchemy.orm import query
 from . import db
 from .models import Preference, Room
 
@@ -36,7 +37,8 @@ def insert_preference():
     req_json = request.get_json()
 
     found_room_id = Room.query.filter_by(room_name=req_json['room_name'].strip()).first().id
-    if (found_room_id):
+    # if the room name is valid and not already preferenced by this user:
+    if found_room_id and not Preference.query.filter(Preference.room_id==found_room_id, Preference.user_zid==current_user.zid).first():
         db.session.add(Preference(
             user_zid=current_user.zid,
             room_id=found_room_id,
@@ -44,4 +46,12 @@ def insert_preference():
         ))
         db.session.commit()
         print(f"inserted room name {req_json['room_name'].strip()} in rank {int(req_json['rank'])}")
-    return jsonify(success=True)
+        return jsonify(success=True)
+    return jsonify(success=False)
+
+@main.route('/get_updated_table')
+@login_required
+def get_updated_table():
+    return jsonify({
+        'preference_list': Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
+    })

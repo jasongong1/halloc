@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 from . import db
@@ -29,7 +30,14 @@ class Floor(db.Model):
     college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'),
         nullable=False)
 
+@dataclass
 class Room(db.Model):
+    id: int
+    room_name: str
+    room_type: str
+    college_id: int
+    floor_id: int
+
     __tablename__ = 'rooms'
     id = db.Column(db.Integer, primary_key=True)
     room_name = db.Column(db.String, nullable=False)
@@ -41,7 +49,14 @@ class Room(db.Model):
     floor_id = db.Column(db.Integer, db.ForeignKey('floors.id'),
         nullable=False)
 
+@dataclass
 class Preference(db.Model):
+    id: int
+    user_zid: int
+    rank: int
+    room_id: int
+    room: dict
+
     __tablename__ = 'preferences'
     id = db.Column(db.Integer, primary_key=True)
     user_zid = db.Column(db.Integer)
@@ -51,4 +66,8 @@ class Preference(db.Model):
     user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'),
         nullable=False)
     room=db.relationship('Room', backref='preference', lazy='joined', innerjoin=True)
+    # def as_dict(self):
+    #     return {
+    #         col.name: getattr(self, col.name) for col in self.__table__.columns
+    #     }
         
