@@ -2,7 +2,7 @@ from flask import Blueprint, json, render_template, redirect, url_for, request, 
 from flask_login import login_required, current_user
 from sqlalchemy.orm import query
 from . import db
-from .models import Preference, Room
+from .models import Preference, Room, College, Floor
 
 main = Blueprint('main', __name__)
 
@@ -10,7 +10,26 @@ main = Blueprint('main', __name__)
 @login_required
 def home():
     preferences = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
-    return render_template("index.html", preferences=preferences)
+    preferences_list = [{
+        'rank': p.rank,
+        'room_name': p.room.room_name,
+        'floor_level': p.room.floor.floor_level,
+        'college_name': p.room.floor.college.college_name
+    } for p in preferences]
+    colleges = []
+    for p in preferences:
+        curr_college = {
+            'id': p.room.floor.college_id,
+            'college_name': p.room.floor.college.college_name
+        }
+        if curr_college not in colleges:
+            colleges.append(curr_college)
+    colleges_list = [
+        {
+            "college_name": c['college_name'],
+            "college_floors": Floor.query.filter_by(college_id=c['id']).order_by(Floor.floor_level).all()
+        } for c in colleges]
+    return render_template("index.html", preferences=preferences_list, colleges=colleges_list)
 
 @main.route('/')
 def index():
@@ -29,7 +48,8 @@ def delete_preference():
         db.session.delete(to_delete)
         db.session.commit()
         print(f"deleted room name {req_json['room_name'].strip()} in rank {req_json['rank'].strip()}")
-    return ('', 204)
+        return jsonify(success=True)
+    return jsonify(success=False)
 
 @main.route('/insert_preference', methods=['POST'])
 @login_required
@@ -62,4 +82,16 @@ def get_updated_table():
     } for p in preferences]
     return jsonify({
         'preference_list': preferences_list
+    })
+
+@main.route('/get_floors', methods=['POST'])
+@login_required
+def get_floors():
+    floors = Floor.query.join(College, Floor.college_id==College.id) \
+    .filter(College.college_name.like(request.get_json()['college_name'].strip())) \
+    .order_by(Floor.floor_level).all()
+    
+    floors_list = [f.floor_level for f in floors]
+    return jsonify({
+        'floors_list': floors_list
     })

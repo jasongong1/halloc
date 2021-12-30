@@ -1,20 +1,8 @@
 window.onload = function() {
     console.log('window loaded');
-    var preference_list_sortable = Sortable.create(document.getElementById('preference-table-body'), {
-        group: 'preference-list-group',
-        animation: 100,
-        onEnd: async function (evt) {
-            preference_list_sortable.option("disabled", true)
-            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
-            if (true || evt.from == preference_list_sortable) {
-                await delete_request(evt.item);
-            }
-            await insert_request(evt.item, evt.newIndex + 1);
-            update_table('preference-table-body');
-            preference_list_sortable.option("disabled", false)
-            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00"; 
-        }
-    });
+    create_sortable_table();
+    create_preference_bin();
+    document.getElementById('college-select').onchange = choose_college_update_floor_buttons;
 }
 
 async function delete_request(el) {
@@ -38,6 +26,38 @@ async function insert_request(el, rank) {
             'room_name': el.cells[1].innerHTML
         })
     });
+}
+
+function create_sortable_table() {
+    var preference_list_sortable = Sortable.create(document.getElementById('preference-table-body'), {
+        group: 'preference-list-group',
+        animation: 100,
+        onEnd: async function(evt) {
+            // if dragging within list
+            if (evt.to == evt.from) {
+                preference_list_sortable.option("disabled", true);
+                document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
+                await delete_request(evt.item);
+                await insert_request(evt.item, evt.newIndex + 1);
+                update_table('preference-table-body');
+                preference_list_sortable.option("disabled", false);
+                document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00"; 
+            }
+        }
+    });
+    return preference_list_sortable;
+}
+
+function create_preference_bin() {
+    var preference_bin_sortable = Sortable.create(document.getElementById('preference-bin'), {
+        group: 'preference-list-group',
+        animation: 100,
+        onAdd: async function(evt) {
+            await delete_request(evt.item);
+            evt.item.parentNode.removeChild(evt.item);
+        }
+    });
+    return preference_bin_sortable;
 }
 
 async function update_table(table_id) {
@@ -67,4 +87,33 @@ async function update_table(table_id) {
             college_cell.innerHTML = preference.college_name;
         });
     })
+}
+
+async function choose_college_update_floor_buttons() {
+    var college_and_floor_selector = document.getElementById('college-select');
+    college_and_floor_selector.setAttribute('disabled', 'disabled');
+    await fetch("/get_floors", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'college_name': this.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        var button_strip=document.getElementById('level-select-button-bar');
+        if (!button_strip) {
+            return;
+        }
+        button_strip.textContent='';
+        data.floors_list.forEach((floor) => {
+            var new_button = document.createElement("BUTTON");
+            new_button.className+="btn btn-secondary";
+            new_button.innerHTML=floor;
+            button_strip.appendChild(new_button);
+        });
+    })
+    college_and_floor_selector.removeAttribute('disabled');
 }

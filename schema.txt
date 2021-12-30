@@ -32,6 +32,15 @@ CREATE TABLE colleges (
         PRIMARY KEY(id)
     );
 
+CREATE TABLE user_college_join (
+        id INTEGER NOT NULL,
+        user_zid INT NOT NULL,
+        college_id INT NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(user_zid) REFERENCES users(zid),
+        FOREIGN KEY(college_id) REFERENCES colleges(id)
+    );
+
 CREATE TABLE preferences (
         id INTEGER NOT NULL,
         user_zid INT NOT NULL,
@@ -61,5 +70,4 @@ BEGIN
     WHERE user_zid = OLD.user_zid
     AND rank > OLD.rank;
 END;
-
 ==================== for testing, init a small db
