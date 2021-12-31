@@ -71,3 +71,7 @@ BEGIN
     AND rank > OLD.rank;
 END;
 ==================== for testing, init a small db
+INSERT INTO preferences (user_zid, room_id, rank) VALUES (5555555, 1, 1);
+INSERT INTO preferences (user_zid, room_id, rank) VALUES (5555555, 2, 2);
+INSERT INTO preferences (user_zid, room_id, rank) VALUES (5555555, 3, 3);
+INSERT INTO preferences (user_zid, room_id, rank) VALUES (5555555, 4, 4);

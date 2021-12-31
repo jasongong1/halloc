@@ -42,7 +42,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button id="preference-bin" class="btn btn-outline-danger">
+        <button id="preference-bin" class="btn btn-outline-danger" onclick="delete_all_preferences()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -58,15 +58,25 @@
                 <label for="colleges" class="sr-only">College: </label>
                 <select id="college-select" name="colleges" class="form-select col"  {{ 'disabled' if colleges|length <= 1}}>
                     {% for college in colleges %}
-                        <option value={{ college.college_name }}>{{ college.college_name }}</option>
+                        <option value={{ college.college_name }} {{ 'selected=selected' if loop.index == 1 }} id="college-id-{{college.college_id}}" onclick="current_college_selected.change_displayed_college('college-id-{{ college.college_id }}')">{{ college.college_name }}</option>
                     {% endfor %}
                 </select>
-
-                <div id="level-select-button-bar" class="btn-group col-8" role="group">
-                    {% for floor in colleges[0].college_floors %}
-                    <button type="button" class="btn btn-secondary">{{ floor.floor_level }}</button>
+                {% for college in colleges %}
+                <div id="button-bar-college-id-{{college.college_id}}" class="btn-group col-8" role="group" {% if loop.index != 1 %} style="display: none;" {% endif %}>
+                    {% for floor in college.college_floors %}
+                    <button type="button" class="btn btn-secondary" id="btn-floor-{{floor.id}}" onclick="current_map_displayed.change_displayed_level('map-floor-{{ floor.id }}')">{{ floor.floor_level }}</button>
                     {% endfor %}
                 </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="college-map-container">
+            {% for college in colleges %}
+                {% for floor in college.college_floors %}
+                    <div id="map-floor-{{ floor.id }}" class="college-map-common">
+                    </div>
+                {% endfor %}
+            {% endfor %}
             </div>
         </div>
     </div>

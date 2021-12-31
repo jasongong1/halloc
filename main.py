@@ -25,7 +25,8 @@ def home():
         if curr_college not in colleges:
             colleges.append(curr_college)
     colleges_list = [
-        {
+        {   
+            "college_id": c['id'],
             "college_name": c['college_name'],
             "college_floors": Floor.query.filter_by(college_id=c['id']).order_by(Floor.floor_level).all()
         } for c in colleges]
@@ -84,14 +85,9 @@ def get_updated_table():
         'preference_list': preferences_list
     })
 
-@main.route('/get_floors', methods=['POST'])
+@main.route('/delete_all_preferences', methods=['DELETE'])
 @login_required
-def get_floors():
-    floors = Floor.query.join(College, Floor.college_id==College.id) \
-    .filter(College.college_name.like(request.get_json()['college_name'].strip())) \
-    .order_by(Floor.floor_level).all()
-    
-    floors_list = [f.floor_level for f in floors]
-    return jsonify({
-        'floors_list': floors_list
-    })
+def delete_all_preferences():
+    Preference.query.filter_by(user_zid=current_user.zid).delete();
+    db.session.commit()
+    return jsonify(success=True)

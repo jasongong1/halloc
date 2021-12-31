@@ -1,3 +1,13 @@
+#room-chosen-wrapper, #room-selector {
+    background-color: rgb(240, 240, 240);
+    padding: 10px;
+}
+
+/* #preferences-table {
+    height: 600px;
+    background-color: red;
+} */
+
 #college-and-floor-selector {
     padding-left: 20px;
     padding-right: 20px;
@@ -11,6 +21,51 @@
     margin-right: 20px;
 }
 
-/* #preference-bin {
+#preference-bin {
+    margin-top: 100px;
+}
 
-} */
+#preference-bin tr {
+    display: none;
+}
+
+#college-map-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    padding: 20px;
+    margin: 20px 0 0 0;
+    background-color: grey;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+#map-stack-container {
+    width: 200px;
+    height: 200px;
+    background-color: aliceblue;
+}
+
+.college-map-common {
+    width: 100px;
+    height: 100px;
+    display: none;
+    position: absolute;
+    margin: auto;
+    background-color: red;
+}
+
+#map-floor-1 {
+    background-color: green;
+    display: block;
+}
+
+#map-floor-2 {
+    background-color: orange;
+    display: none;
+}
+
+#map-floor-3 {
+    background-color: lightskyblue;
+    display: none;
+}
