@@ -74,7 +74,6 @@ def insert_preference():
 @login_required
 def get_updated_table():
     preferences = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank).all()
-    # print(str(preferences))
     preferences_list = [{
         'rank': p.rank,
         'room_name': p.room.room_name,
