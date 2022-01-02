@@ -1,0 +1,106 @@
+/* UNSW HALL */
+
+.hall-1 {
+    height: 220px;
+}
+
+.floor-map-hall--cluster-west {
+    background-color: red;
+    border-width: 1px;
+    border-color: aqua;
+    border-style: solid;
+    grid-column: 1 / 10;
+    grid-row: 1;
+    display: grid;
+}
+
+.floor-map-hall--cluster-east {
+    background-color: lightgreen;
+    border-width: 1px;
+    border-color: aqua;
+    border-style: solid;
+    grid-column: 16 / 25;
+    grid-row: 1;
+    display: grid;
+}
+
+.floor-map-hall--floor-lobby-lv-1 {
+    background-color: blue;
+    grid-column: 10 / 16;
+    grid-row: 1;
+    display: grid;
+}
+
+/* HALL EAST WEST CLUSTERS */
+.floor-map-hall--cluster-west.north-room, .floor-map-hall--cluster-east.north-room {
+    grid-row: 1 / 5;
+}
+
+.floor-map-hall--cluster-west.south-room, .floor-map-hall--cluster-east.south-room {
+    grid-row: 7 / 11;
+}
+
+/* HALL WEST CLUSTERS */
+.floor-map-hall--cluster-west.large-room {
+    grid-column: 1 / 4;
+    grid-row: 1 / 11;
+
+}
+
+.floor-map-hall--cluster-west.west-cluster-right-third {
+    grid-column: 8 / 10;
+}
+
+.floor-map-hall--cluster-west.west-cluster-left-third {
+    grid-column: 4 / 6;
+}
+
+.floor-map-hall--cluster-west.west-cluster-center-third {
+    grid-column: 6 / 8;
+}
+
+.floor-map-hall--cluster-west.west-cluster-left-bathroom {
+    grid-column: 6 / 7;
+}
+
+.floor-map-hall--cluster-west.west-cluster-right-bathroom {
+    grid-column: 7 / 8;
+}
+
+/* HALL EAST CLUSTERS */
+
+.floor-map-hall--cluster-east.large-room {
+    grid-column: 15 / 21;
+    grid-row: 1 / 11;
+
+}
+
+/* clockwise from southeast room */
+/* 1 */
+.floor-map-hall--cluster-east.south-room.east-cluster-right-third {
+    grid-column: 11 / 15;
+}
+
+/* 2, 3 */
+.floor-map-hall--cluster-east.east-cluster-left-third {
+    grid-column: 1 / 5;
+}
+
+/* 4 */
+.floor-map-hall--cluster-east.east-cluster-center-third {
+    grid-column: 5 / 9;
+}
+
+/* 5 */
+.floor-map-hall--cluster-east.north-room.east-cluster-right-third {
+    grid-column: 9 / 13;
+}
+
+
+.floor-map-hall--cluster-east.east-cluster-left-bathroom {
+    grid-column: 5 / 8;
+}
+
+.floor-map-hall--cluster-east.east-cluster-right-bathroom {
+    grid-column: 8 / 11;
+}
