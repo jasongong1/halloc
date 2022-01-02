@@ -28,7 +28,11 @@ def home():
         {   
             "college_id": c['id'],
             "college_name": c['college_name'],
-            "college_floors": Floor.query.filter_by(college_id=c['id']).order_by(Floor.floor_level).all()
+            "college_floors": [{
+                'floor_level': floor.__dict__['floor_level'],
+                'college_id': floor.__dict__['college_id'],
+                'id': floor.__dict__['id']
+            } for floor in Floor.query.filter_by(college_id=c['id']).order_by(Floor.floor_level).all()]
         } for c in colleges]
     return render_template("index.html", preferences=preferences_list, colleges=colleges_list)
 

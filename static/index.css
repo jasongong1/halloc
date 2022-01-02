@@ -38,17 +38,12 @@
     display: grid;
     align-items: center;
     justify-items: center;
-}
-
-#map-stack-container {
-    width: 200px;
-    height: 200px;
-    background-color: aliceblue;
+    position: relative;
 }
 
 .college-map-common {
-    width: 100px;
-    height: 100px;
+    height: 100%;
+    width: 100%;
     display: none;
     position: absolute;
     margin: auto;
@@ -57,7 +52,7 @@
 
 #map-floor-1 {
     background-color: green;
-    display: block;
+    display: grid;
 }
 
 #map-floor-2 {

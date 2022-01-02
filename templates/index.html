@@ -2,6 +2,7 @@
 
 {% block styles %}
 <link href="/static/index.css" rel="stylesheet">
+<link href="/static/maps.css" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
@@ -77,7 +78,6 @@
                     </div>
                 {% endfor %}
             {% endfor %}
-            </div>
         </div>
     </div>
 </div>
@@ -90,5 +90,9 @@
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script type="text/javascript" src='/static/index.js'></script>
+<script>
+    var colleges = '{{ colleges|tojson|safe }}';
+    create_college_maps(colleges);
+</script>
 {% endblock %}
 

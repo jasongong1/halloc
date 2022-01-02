@@ -125,6 +125,7 @@ var current_college_selected = (function() {
 
 var current_map_displayed = (function() {
     var curr_displayed_id = 'map-floor-1';
+    var curr_displayed
     var temp_displayed_id = '';
 
     var ret_mod = {};
@@ -135,7 +136,7 @@ var current_map_displayed = (function() {
 
     ret_mod.change_displayed_level = function(id_str) {
         document.getElementById(curr_displayed_id).style.display='none';
-        document.getElementById(id_str).style.display='block';
+        document.getElementById(id_str).style.display='grid';
         curr_displayed_id=id_str;
     };
 
@@ -145,7 +146,7 @@ var current_map_displayed = (function() {
             return;
         }
         document.getElementById(curr_displayed_id).style.display='none';
-        document.getElementById(id_str).style.display='block';
+        document.getElementById(id_str).style.display='grid';
     }
 
     ret_mod.undo_temp_change_level = function() {
@@ -153,7 +154,7 @@ var current_map_displayed = (function() {
             return;
         }
         document.getElementById(temp_displayed_id).style.display='none';
-        document.getElementById(curr_displayed_id).style.display='block';
+        document.getElementById(curr_displayed_id).style.display='grid';
     }
 
     return ret_mod;
@@ -169,5 +170,115 @@ function create_map_swapper() {
         document.getElementById(`btn-floor-${floor_id}`).addEventListener("mouseleave", function() {
             current_map_displayed.undo_temp_change_level();
         })
+    });
+}
+
+function create_college_maps(colleges) {
+    console.log(colleges);
+    JSON.parse(colleges).forEach((college) => {
+        console.log(college);
+        var college_id = college.college_id;
+        if (college.college_name.toLowerCase() == 'hall') {
+            create_hall_map(college.college_floors);
+        }
     })
+}
+
+function create_hall_map(floor_list) {
+    floor_list.forEach((floor, idx) => {
+        var map_parent = document.getElementById(`map-floor-${floor.id}`);
+        if (idx == 0) {
+            draw_ground_floor(map_parent);
+        }
+    });
+
+    function draw_ground_floor(parent) {
+        parent.className += " hall-1";
+
+        var cluster_west = document.createElement('DIV');
+        cluster_west.className = "floor-map-hall--cluster-west";
+        
+        var cluster_east = document.createElement('DIV');
+        cluster_east.className = "floor-map-hall--cluster-east";
+
+        var floor_lobby_lv_1 = document.createElement('DIV');
+        floor_lobby_lv_1.className = "floor-map-hall--floor-lobby-lv-1";
+                
+        draw_west_cluster(cluster_west);
+        draw_east_cluster(cluster_east);
+
+        parent.appendChild(cluster_west);
+        parent.appendChild(cluster_east);
+        parent.appendChild(floor_lobby_lv_1);
+    }
+
+    function draw_west_cluster(parent) {
+        var large_room = document.createElement('DIV');
+        large_room.className = "floor-map-hall--cluster-west large-room";
+
+        var room_1 = document.createElement('DIV');
+        room_1.className = "floor-map-hall--cluster-west south-room west-cluster-right-third";
+
+        var room_2 = document.createElement('DIV');
+        room_2.className = "floor-map-hall--cluster-west south-room west-cluster-left-third";
+
+        var room_3 = document.createElement('DIV');
+        room_3.className = "floor-map-hall--cluster-west north-room west-cluster-left-third";
+
+        var room_4 = document.createElement('DIV');
+        room_4.className = "floor-map-hall--cluster-west north-room west-cluster-center-third";
+        
+        var room_5 = document.createElement('DIV');
+        room_5.className = "floor-map-hall--cluster-west north-room west-cluster-right-third";
+
+        var bathroom_left = document.createElement('DIV');
+        bathroom_left.className = "floor-map-hall--cluster-west south-room west-cluster-left-bathroom";
+
+        var bathroom_right = document.createElement('DIV');
+        bathroom_right.className = "floor-map-hall--cluster-west south-room west-cluster-right-bathroom";
+
+        parent.appendChild(large_room);
+        parent.appendChild(room_1);
+        parent.appendChild(room_2);
+        parent.appendChild(room_3);
+        parent.appendChild(room_4);
+        parent.appendChild(room_5);
+        parent.appendChild(bathroom_left);
+        parent.appendChild(bathroom_right);
+    }
+
+    function draw_east_cluster(parent) {
+        var large_room = document.createElement('DIV');
+        large_room.className = "floor-map-hall--cluster-east large-room";
+
+        var room_1 = document.createElement('DIV');
+        room_1.className = "floor-map-hall--cluster-east south-room east-cluster-right-third";
+
+        var room_2 = document.createElement('DIV');
+        room_2.className = "floor-map-hall--cluster-east south-room east-cluster-left-third";
+
+        var room_3 = document.createElement('DIV');
+        room_3.className = "floor-map-hall--cluster-east north-room east-cluster-left-third";
+
+        var room_4 = document.createElement('DIV');
+        room_4.className = "floor-map-hall--cluster-east north-room east-cluster-center-third";
+        
+        var room_5 = document.createElement('DIV');
+        room_5.className = "floor-map-hall--cluster-east north-room east-cluster-right-third";
+
+        var bathroom_left = document.createElement('DIV');
+        bathroom_left.className = "floor-map-hall--cluster-east south-room east-cluster-left-bathroom";
+
+        var bathroom_right = document.createElement('DIV');
+        bathroom_right.className = "floor-map-hall--cluster-east south-room east-cluster-right-bathroom";
+
+        parent.appendChild(large_room);
+        parent.appendChild(room_1);
+        parent.appendChild(room_2);
+        parent.appendChild(room_3);
+        parent.appendChild(room_4);
+        parent.appendChild(room_5);
+        parent.appendChild(bathroom_left);
+        parent.appendChild(bathroom_right);
+    }
 }
