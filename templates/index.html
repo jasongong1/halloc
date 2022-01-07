@@ -89,10 +89,11 @@
 
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script type="text/javascript" src='/static/index.js'></script>
+<script type="text/javascript" src='/static/maps.js'></script>
 <script>
     var colleges = '{{ colleges|tojson|safe }}';
     create_college_maps(colleges);
 </script>
+<script type="text/javascript" src='/static/index.js'></script>
 {% endblock %}
 

@@ -1,68 +1,179 @@
 /* UNSW HALL */
 
 .hall-1 {
-    height: 220px;
+    height: 38vh;
 }
 
+.hall-mid {
+    height: 75vh;
+}
+
+.hall-upper {
+    height: 75vh;
+    width: 13.8vw;
+}
+
+/* FLOOR-TYPE STYLE (lvls {1}, {2,3,4,5}, {6,7} are different) */
+
+/* HALL WEST CLUSTERS */
 .floor-map-hall--cluster-west {
     background-color: red;
     border-width: 1px;
     border-color: aqua;
     border-style: solid;
-    grid-column: 1 / 10;
-    grid-row: 1;
+    grid-column : 1 / 17;
     display: grid;
 }
 
+.floor-map-hall--cluster-west.floor-map-hall--lv-1 {
+    grid-row: 6 / 19;
+}
+
+.floor-map-hall--cluster-west.floor-map-hall--lv-mid {
+    grid-row: 21 / 34;
+}
+
+/* HALL EAST CLUSTERS */
 .floor-map-hall--cluster-east {
     background-color: lightgreen;
     border-width: 1px;
     border-color: aqua;
     border-style: solid;
-    grid-column: 16 / 25;
-    grid-row: 1;
+    grid-column: 25 / 41;
+    display: grid;
+}
+.floor-map-hall--cluster-east.floor-map-hall--lv-1 {
+    grid-row: 6 / 19;
+}
+.floor-map-hall--cluster-east.floor-map-hall--lv-mid {
+    grid-row: 21 / 34;
+}
+
+/* HALL NORTH CLUSTERS */
+.floor-map-hall--cluster-north {
+    background-color: coral;
+    border-width: 1px;
+    border-color: aqua;
+    border-style: solid;
     display: grid;
 }
 
-.floor-map-hall--floor-lobby-lv-1 {
+.floor-map-hall--cluster-north.floor-map-hall--lv-mid {
+    grid-column: 15 / 27;
+    grid-row: 1 / 21;
+}
+
+.floor-map-hall--cluster-north.floor-map-hall--lv-upper {
+    grid-row: 1 / 21;
+    grid-column: 1 / 13;
+}
+
+/* HALL FLOOR LOBBIES */
+.floor-map-hall--floor-lobby {
     background-color: blue;
-    grid-column: 10 / 16;
-    grid-row: 1;
     display: grid;
 }
+.floor-map-hall--floor-lobby.floor-map-hall--lv-1 {
+    grid-column: 17 / 25;
+    grid-row: 6 / 15;
+}
+.floor-map-hall--floor-lobby.floor-map-hall--lv-mid {
+    grid-column: 17 / 25;
+    grid-row: 21 / 30;
+}
+.floor-map-hall--floor-lobby.floor-map-hall--lv-upper {
+    grid-row: 21 / 30;
+    grid-column: 3 / 11;
+}
+.floor-map-hall--lv-1.floor-map-hall--elevator-stairwell {
+    background-color: hotpink;
+    grid-row: 1 / 6;
+    grid-column: 16 / 26;
+    border-color: aqua;
+    border-style: solid;
+    border-width: 1px;
+    display: grid;
+}
+/* LV 1 ONLY - ELEVATOR, STAIRWELL */
+.floor-map-hall--lv-1.stairwell {
+    grid-row: 1 / 21;
+    grid-column: 28 / 48;
+}
+.floor-map-hall--lv-1.elevator {
+    grid-row: 1 / 16;
+    grid-column: 1 / 15;
+}
+.floor-map-hall--lv-1.breaker-box {
+    grid-row: 16 / 21;
+    grid-column: 1 / 15;
+}
 
-/* HALL EAST WEST CLUSTERS */
+
+/* HALL RF ROOMS */
+
+.floor-map-hall--rf-room {
+    background-color: aquamarine;
+}
+
+.floor-map-hall--rf-room.floor-map-hall--lv-mid {
+    grid-row: 25 / 36;
+    grid-column: 19 / 23;
+}
+
+.floor-map-hall--rf-room.floor-map-hall--lv-upper {
+    grid-row: 25 / 36;
+    grid-column: 5 / 9;
+}
+
+/* NORTH, EAST, WEST CLUSTER STYLES - COMMON BETWEEN ALL FLOOR TYPES */
+
+/* HALL EAST WEST CLUSTERS COMMON */
 .floor-map-hall--cluster-west.north-room, .floor-map-hall--cluster-east.north-room {
-    grid-row: 1 / 5;
+    grid-row: 5 / 15;
 }
 
 .floor-map-hall--cluster-west.south-room, .floor-map-hall--cluster-east.south-room {
-    grid-row: 7 / 11;
+    grid-row: 19 / 29;
+}
+
+.large-room-north-balcony {
+    grid-row: 1 / 4;
+}
+
+.large-room-south-balcony {
+    grid-row: 14 / 16;
+}
+
+.floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
+    grid-row: 21 / 29;
 }
 
 /* HALL WEST CLUSTERS */
+
 .floor-map-hall--cluster-west.large-room {
     grid-column: 1 / 4;
-    grid-row: 1 / 11;
-
+    grid-row: 1 / 31;
+    display: grid;
 }
 
+/* clockwise from southeast room */
+/* 1 */
 .floor-map-hall--cluster-west.west-cluster-right-third {
     grid-column: 8 / 10;
 }
-
+/* 2 */
 .floor-map-hall--cluster-west.west-cluster-left-third {
     grid-column: 4 / 6;
 }
-
+/* 3 */
 .floor-map-hall--cluster-west.west-cluster-center-third {
     grid-column: 6 / 8;
 }
-
+/* 4 */
 .floor-map-hall--cluster-west.west-cluster-left-bathroom {
     grid-column: 6 / 7;
 }
-
+/* 5 */
 .floor-map-hall--cluster-west.west-cluster-right-bathroom {
     grid-column: 7 / 8;
 }
@@ -70,28 +181,42 @@
 /* HALL EAST CLUSTERS */
 
 .floor-map-hall--cluster-east.large-room {
-    grid-column: 15 / 21;
-    grid-row: 1 / 11;
-
+    grid-column: 13 / 21;
+    grid-row: 1 / 31;
+    display: grid;
 }
 
-/* clockwise from southeast room */
-/* 1 */
+.floor-map-hall--cluster-east.large-room-south-balcony {
+    grid-column: 8 / 30;
+}
+
+.floor-map-hall--cluster-east.large-room-north-balcony {
+    grid-column: 1 / 30;
+}
+
+.floor-map-hall--cluster-east.large-room-south-balcony.mask {
+    grid-column: 1 / 8;
+    border-color: red;
+    margin: 0px 0px -1px -1px;
+}
+
+/* clockwise from northwest room */
+/* 4 */
 .floor-map-hall--cluster-east.south-room.east-cluster-right-third {
     grid-column: 11 / 15;
 }
 
-/* 2, 3 */
+/* 1, 5 */
 .floor-map-hall--cluster-east.east-cluster-left-third {
     grid-column: 1 / 5;
 }
 
-/* 4 */
-.floor-map-hall--cluster-east.east-cluster-center-third {
+/* 2 */
+.floor-map-hall--cluster-east.north-room.east-cluster-center-third {
     grid-column: 5 / 9;
 }
 
-/* 5 */
+/* 3 */
 .floor-map-hall--cluster-east.north-room.east-cluster-right-third {
     grid-column: 9 / 13;
 }
@@ -104,3 +229,85 @@
 .floor-map-hall--cluster-east.east-cluster-right-bathroom {
     grid-column: 8 / 11;
 }
+
+/* HALL NORTH CLUSTERS */
+
+.floor-map-hall--cluster-north.large-room {
+    grid-row: 1 / 24;
+    grid-column: 1 / 61;
+    display: grid;
+}
+
+.floor-map-hall--cluster-north.large-room-west-balcony {
+    grid-column: 1 / 3;
+    grid-row: 1 / 30;
+}
+
+.floor-map-hall--cluster-north.large-room-east-balcony {
+    grid-column: 14 / 16;
+    grid-row: 1 / 24;
+}
+
+.floor-map-hall--cluster-north.large-room-east-balcony.mask {
+    border-color: red;
+    grid-column: 14 / 16;
+    grid-row: 24 / 30;
+    margin: 0px -1px -1px -1px;
+}
+
+.floor-map-hall--cluster-north.west-room {
+    grid-column: 7 / 28;
+}
+
+.floor-map-hall--cluster-north.east-room {
+    grid-column: 34 / 55;
+}
+
+.floor-map-hall--cluster-north.north-cluster-2 {
+    grid-row: 24 / 38;
+}
+
+.floor-map-hall--cluster-north.north-cluster-1 {
+    grid-row: 56 / 71;
+}
+
+.floor-map-hall--cluster-north.north-cluster-3 {
+    grid-row: 19 / 33;
+}
+
+.floor-map-hall--cluster-north.north-cluster-4 {
+    grid-row: 33 / 48;
+}
+
+.floor-map-hall--cluster-north.north-cluster-5 {
+    grid-row: 48 / 62;
+}
+
+.floor-map-hall--cluster-north.north-cluster-6 {
+    grid-row: 62 / 77;
+}
+
+.floor-map-hall--cluster-north.north-cluster-north-bathroom {
+    grid-row: 38 / 47;
+    grid-column: 7 / 24;
+}
+
+.floor-map-hall--cluster-north.north-cluster-south-bathroom {
+    grid-row: 47 / 56;
+    grid-column: 7 / 24;
+}
+
+.floor-map-hall--cluster-north.stairwell {
+    grid-row: 77 / 91;
+}
+
+.floor-map-hall--cluster-north.elevator {
+    grid-row: 71 / 86;
+    grid-column: 7 / 21;
+}
+
+.floor-map-hall--cluster-north.breaker-box {
+    grid-row: 86 / 91;
+    grid-column: 7 / 21;
+}
+
