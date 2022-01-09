@@ -1,1 +1,1 @@
-secret_key='secret_key'
+secret_key='test'
