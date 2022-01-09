@@ -3,11 +3,6 @@
     padding: 10px;
 }
 
-/* #preferences-table {
-    height: 600px;
-    background-color: red;
-} */
-
 #college-and-floor-selector {
     padding-left: 20px;
     padding-right: 20px;
@@ -22,12 +17,13 @@
 }
 
 #preference-bin {
-    margin-top: 100px;
+    position: absolute;
+    bottom: 0;
 }
 
-#preference-bin tr {
+/* #preference-bin tr {
     display: none;
-}
+} */
 
 #college-map-container {
     width: 100%;
@@ -52,15 +48,36 @@
 
 #map-floor-1 {
     background-color: green;
-    display: grid;
 }
 
 #map-floor-2 {
     background-color: orange;
-    display: none;
 }
 
 #map-floor-3 {
     background-color: lightskyblue;
-    display: none;
+}
+
+#map-floor-4 {
+    background-color:cadetblue;
+}
+
+#map-floor-5 {
+    background-color:magenta;
+}
+
+#map-floor-6 {
+    background-color:royalblue;
+}
+
+#map-floor-7 {
+    background-color:azure;
+}
+
+#map-floor-8 {
+    background-color:plum;
+}
+
+#map-floor-9 {
+    background-color:lightgreen;
 }

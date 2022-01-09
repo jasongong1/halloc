@@ -32,11 +32,11 @@ class Floor(db.Model):
         nullable=False)
     college=db.relationship('College', backref='floor_college', lazy='joined', innerjoin=True)
 
-# class UserCollegeJoin(db.Model):
-#     __tablename__ = 'user_college_join'
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'), nullable=False)
-#     college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'), nullable=False)
+class UserCollegeJoin(db.Model):
+    __tablename__ = 'user_college_join'
+    id = db.Column(db.Integer, primary_key=True)
+    user_zid = db.Column(db.Integer, db.ForeignKey('users.zid'), nullable=False)
+    college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'), nullable=False)
 
 @dataclass
 class Room(db.Model):

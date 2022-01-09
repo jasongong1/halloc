@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User
+from .models import User, College, UserCollegeJoin
 
 auth = Blueprint('auth', __name__)
 
@@ -52,8 +52,19 @@ def register_post():
     new_user = User(
         zid=zid, 
         email=f"z{zid}@unsw.edu.au" if not email else email,
-        hash=generate_password_hash(password, method='sha256'))
+        hash=generate_password_hash(password, method='sha256')
+    )
     
+    # GIVES PERMS FOR ALL USERS TO ACCESS ALL COLLEGES
+    colleges = College.query.all()
+    for college in colleges:
+        new_user_college_join = UserCollegeJoin(
+            user_zid=zid,
+            college_id=college.id
+        )
+        db.session.add(new_user_college_join)
+    # END
+
     db.session.add(new_user)
     db.session.commit()
 

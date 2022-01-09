@@ -9,7 +9,7 @@ async function delete_request(el) {
         method: "DELETE",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ 
-            'rank': el.cells[0].innerHTML,
+            'rank': el.dataset.preferenceRank,
             'room_name': el.cells[1].innerHTML
         })
     });
@@ -28,29 +28,56 @@ async function insert_request(el, rank) {
 }
 
 function create_sortable_table() {
-    var preference_list_sortable = Sortable.create(document.getElementById('preference-table-body'), {
-        group: 'preference-list-group',
+    var table_elem = document.getElementById('preference-table-body');
+    var preference_list_sortable = Sortable.create(table_elem, {
+        group: {
+            name: 'preference-list-group',
+            put: ['cluster']
+        },
         animation: 100,
-        removeOnSpill: true,
-        onEnd: async function(evt) {
+        onUpdate: async function(evt) {
             // if dragging within list
             if (evt.to == evt.from) {
                 preference_list_sortable.option("disabled", true);
                 document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
-                await delete_request(evt.item);
-                await insert_request(evt.item, evt.newIndex + 1);
-                await update_table('preference-table-body');
+                if (evt.oldIndex != evt.newIndex) {
+                    await delete_request(evt.item);
+                    await insert_request(evt.item, evt.newIndex + 1);
+                    await update_table('preference-table-body');
+                }
                 preference_list_sortable.option("disabled", false);
                 document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00"; 
             }
+        },
+        onAdd: async function(evt) {
+            console.log('printed new row');
+            var new_row = document.createElement("TR");
+            new_row.className += " preference-list-row";
+            var header_cell_rank = document.createElement("TH");
+            header_cell_rank.scope = "row";
+            header_cell_rank.innerHTML = evt.newIndex + 1;
+            new_row.appendChild(header_cell_rank);
+            var room_name_cell = new_row.insertCell(-1);
+            room_name_cell.innerHTML = evt.item.dataset.roomName;
+            var floor_name_cell = new_row.insertCell(-1);
+            floor_name_cell.innerHTML = evt.item.dataset.floorName;
+            var college_name_cell = new_row.insertCell(-1);
+            college_name_cell.innerHTML = evt.item.dataset.collegeName;
+            evt.item.replaceWith(new_row);
+            await insert_request(new_row, evt.newIndex + 1);
+            await update_table('preference-table-body');
         }
     });
     return preference_list_sortable;
 }
 
 function create_preference_bin() {
-    var preference_bin_sortable = Sortable.create(document.getElementById('preference-bin'), {
-        group: 'preference-list-group',
+    var bin_elem = document.getElementById('preference-bin');
+    var preference_bin_sortable = Sortable.create(bin_elem, {
+        group: {
+            name: 'preference-bin',
+            put: ['preference-list-group']
+        },
         animation: 100,
         onAdd: async function(evt) {
             await delete_request(evt.item);
@@ -86,6 +113,7 @@ async function update_table(table_id) {
         table.textContent='';
         data.preference_list.forEach((preference) => {
             var curr_row = table.insertRow(-1);
+            curr_row.dataset.preferenceRank = preference.rank;
             var header_cell_rank = document.createElement("TH");
             header_cell_rank.innerHTML = preference.rank;
             header_cell_rank.scope = "row";
@@ -102,7 +130,7 @@ async function update_table(table_id) {
 }
 
 var current_college_selected = (function() {
-    var curr_selected_college_id = "college-id-1";
+    var curr_selected_college_id = "college-id-2";
 
     var ret_mod = {};
 
@@ -110,8 +138,15 @@ var current_college_selected = (function() {
         return curr_selected_college_id;
     };
 
+    ret_mod.set_curr_college = function(elem_str) {
+        curr_selected_college_id = elem_str;
+    };
+
     ret_mod.change_displayed_college = function(id_str) {
         var new_displayed_college_button_bar = document.getElementById(`button-bar-${id_str}`);
+        if (!new_displayed_college_button_bar) {
+            return;
+        }
         document.getElementById(`button-bar-${curr_selected_college_id}`).style.display='none';
         new_displayed_college_button_bar.style.display='flex';
         curr_selected_college_id=id_str;
@@ -123,13 +158,17 @@ var current_college_selected = (function() {
 })();
 
 var current_map_displayed = (function() {
-    var curr_displayed_id = 'map-floor-1';
+    var curr_displayed_id = '';
     var temp_displayed_id = '';
 
     var ret_mod = {};
 
     ret_mod.get_curr_level = function() {
         return curr_displayed_id;
+    };
+
+    ret_mod.set_curr_level = function(elem_str) {
+        curr_displayed_id = elem_str;
     };
 
     ret_mod.change_displayed_level = function(id_str) {
@@ -160,8 +199,13 @@ var current_map_displayed = (function() {
 
 function create_map_swapper() {
     var all_maps = document.querySelectorAll('*[id^="map-floor-"]');
+    var floor_init = false;
     all_maps.forEach((map) => {
         floor_id = map.id.split("map-floor-")[1];
+        if (!floor_init) {
+            current_map_displayed.set_curr_level(`map-floor-${floor_id}`);
+            floor_init = true;
+        }
         document.getElementById(`btn-floor-${floor_id}`).addEventListener("mouseover", function() {
             current_map_displayed.temp_change_level(map.id);
         })

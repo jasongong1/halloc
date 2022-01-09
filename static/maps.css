@@ -1,7 +1,7 @@
 /* UNSW HALL */
 
 .hall-1 {
-    height: 38vh;
+    height: 37vh;
 }
 
 .hall-mid {
@@ -26,7 +26,7 @@
 }
 
 .floor-map-hall--cluster-west.floor-map-hall--lv-1 {
-    grid-row: 6 / 19;
+    grid-row: 6 / 17;
 }
 
 .floor-map-hall--cluster-west.floor-map-hall--lv-mid {
@@ -43,7 +43,7 @@
     display: grid;
 }
 .floor-map-hall--cluster-east.floor-map-hall--lv-1 {
-    grid-row: 6 / 19;
+    grid-row: 6 / 17;
 }
 .floor-map-hall--cluster-east.floor-map-hall--lv-mid {
     grid-row: 21 / 34;
@@ -64,7 +64,7 @@
 }
 
 .floor-map-hall--cluster-north.floor-map-hall--lv-upper {
-    grid-row: 1 / 21;
+    grid-row: 1 / 18;
     grid-column: 1 / 13;
 }
 
@@ -82,7 +82,7 @@
     grid-row: 21 / 30;
 }
 .floor-map-hall--floor-lobby.floor-map-hall--lv-upper {
-    grid-row: 21 / 30;
+    grid-row: 18 / 29;
     grid-column: 3 / 11;
 }
 .floor-map-hall--lv-1.floor-map-hall--elevator-stairwell {
@@ -121,7 +121,7 @@
 }
 
 .floor-map-hall--rf-room.floor-map-hall--lv-upper {
-    grid-row: 25 / 36;
+    grid-row: 23 / 36;
     grid-column: 5 / 9;
 }
 
@@ -137,11 +137,13 @@
 }
 
 .large-room-north-balcony {
-    grid-row: 1 / 4;
+    grid-row: 1 / 7;
+    border-style: none none solid none;
 }
 
 .large-room-south-balcony {
-    grid-row: 14 / 16;
+    grid-row: 27 / 31;
+    border-style: solid none none none;
 }
 
 .floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
@@ -157,23 +159,23 @@
 }
 
 /* clockwise from southeast room */
-/* 1 */
-.floor-map-hall--cluster-west.west-cluster-right-third {
+/* 1, 5 */
+.floor-map-hall--cluster-west.west-cluster-1, .floor-map-hall--cluster-west.west-cluster-5 {
     grid-column: 8 / 10;
 }
-/* 2 */
-.floor-map-hall--cluster-west.west-cluster-left-third {
+/* 2, 3 */
+.floor-map-hall--cluster-west.west-cluster-2, .floor-map-hall--cluster-west.west-cluster-3 {
     grid-column: 4 / 6;
 }
-/* 3 */
-.floor-map-hall--cluster-west.west-cluster-center-third {
+/* 4 */
+.floor-map-hall--cluster-west.west-cluster-4 {
     grid-column: 6 / 8;
 }
-/* 4 */
+
 .floor-map-hall--cluster-west.west-cluster-left-bathroom {
     grid-column: 6 / 7;
 }
-/* 5 */
+
 .floor-map-hall--cluster-west.west-cluster-right-bathroom {
     grid-column: 7 / 8;
 }
@@ -196,28 +198,30 @@
 
 .floor-map-hall--cluster-east.large-room-south-balcony.mask {
     grid-column: 1 / 8;
-    border-color: red;
-    margin: 0px 0px -1px -1px;
+    grid-row: 18 / 31;
+    border-color: red green blue yellow;
+    border-style: solid;
+    margin: 1px 0px -1px -1px;
 }
 
 /* clockwise from northwest room */
 /* 4 */
-.floor-map-hall--cluster-east.south-room.east-cluster-right-third {
+.floor-map-hall--cluster-east.south-room.east-cluster-4 {
     grid-column: 11 / 15;
 }
 
 /* 1, 5 */
-.floor-map-hall--cluster-east.east-cluster-left-third {
+.floor-map-hall--cluster-east.south-room.east-cluster-5, .floor-map-hall--cluster-east.north-room.east-cluster-1 {
     grid-column: 1 / 5;
 }
 
 /* 2 */
-.floor-map-hall--cluster-east.north-room.east-cluster-center-third {
+.floor-map-hall--cluster-east.north-room.east-cluster-2 {
     grid-column: 5 / 9;
 }
 
 /* 3 */
-.floor-map-hall--cluster-east.north-room.east-cluster-right-third {
+.floor-map-hall--cluster-east.north-room.east-cluster-3 {
     grid-column: 9 / 13;
 }
 
@@ -239,20 +243,23 @@
 }
 
 .floor-map-hall--cluster-north.large-room-west-balcony {
-    grid-column: 1 / 3;
+    border-style: none solid none none;
+    grid-column: 1 / 5;
     grid-row: 1 / 30;
 }
 
 .floor-map-hall--cluster-north.large-room-east-balcony {
-    grid-column: 14 / 16;
+    border-style: none none none solid;
+    grid-column: 28 / 32;
     grid-row: 1 / 24;
 }
 
 .floor-map-hall--cluster-north.large-room-east-balcony.mask {
-    border-color: red;
-    grid-column: 14 / 16;
+    border-style: solid;
+    border-color: red green yellow blue;
+    grid-column: 18 / 32;
     grid-row: 24 / 30;
-    margin: 0px -1px -1px -1px;
+    margin: -1px -2px -1px 3px;
 }
 
 .floor-map-hall--cluster-north.west-room {
@@ -311,3 +318,12 @@
     grid-column: 7 / 21;
 }
 
+.draggable-room{
+    min-height: 40px;
+}
+
+.draggable-room:hover {
+    transform: scale(1.05);
+    transition: .2s ease-in-out 0s;
+    cursor: pointer;
+}
