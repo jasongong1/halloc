@@ -1,7 +1,7 @@
 /* UNSW HALL */
 
 .hall-1 {
-    height: 37vh;
+    height: 40vh;
 }
 
 .hall-mid {
@@ -18,9 +18,6 @@
 /* HALL WEST CLUSTERS */
 .floor-map-hall--cluster-west {
     background-color: red;
-    border-width: 1px;
-    border-color: aqua;
-    border-style: solid;
     grid-column : 1 / 17;
     display: grid;
 }
@@ -36,9 +33,6 @@
 /* HALL EAST CLUSTERS */
 .floor-map-hall--cluster-east {
     background-color: lightgreen;
-    border-width: 1px;
-    border-color: aqua;
-    border-style: solid;
     grid-column: 25 / 41;
     display: grid;
 }
@@ -52,9 +46,6 @@
 /* HALL NORTH CLUSTERS */
 .floor-map-hall--cluster-north {
     background-color: coral;
-    border-width: 1px;
-    border-color: aqua;
-    border-style: solid;
     display: grid;
 }
 
@@ -89,9 +80,6 @@
     background-color: hotpink;
     grid-row: 1 / 6;
     grid-column: 16 / 26;
-    border-color: aqua;
-    border-style: solid;
-    border-width: 1px;
     display: grid;
 }
 /* LV 1 ONLY - ELEVATOR, STAIRWELL */
@@ -138,12 +126,10 @@
 
 .large-room-north-balcony {
     grid-row: 1 / 7;
-    border-style: none none solid none;
 }
 
 .large-room-south-balcony {
     grid-row: 27 / 31;
-    border-style: solid none none none;
 }
 
 .floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
@@ -198,10 +184,12 @@
 
 .floor-map-hall--cluster-east.large-room-south-balcony.mask {
     grid-column: 1 / 8;
-    grid-row: 18 / 31;
-    border-color: red green blue yellow;
+    grid-row: 19 / 31;
     border-style: solid;
-    margin: 1px 0px -1px -1px;
+    border-color: red green yellow blue;
+    box-sizing: border-box;
+    border-width: 2px;
+    margin: 1px 3px -2px -2px;
 }
 
 /* clockwise from northwest room */
@@ -243,13 +231,11 @@
 }
 
 .floor-map-hall--cluster-north.large-room-west-balcony {
-    border-style: none solid none none;
     grid-column: 1 / 5;
     grid-row: 1 / 30;
 }
 
 .floor-map-hall--cluster-north.large-room-east-balcony {
-    border-style: none none none solid;
     grid-column: 28 / 32;
     grid-row: 1 / 24;
 }
@@ -257,6 +243,9 @@
 .floor-map-hall--cluster-north.large-room-east-balcony.mask {
     border-style: solid;
     border-color: red green yellow blue;
+    box-sizing: border-box;
+    border-width: 2px;
+
     grid-column: 18 / 32;
     grid-row: 24 / 30;
     margin: -1px -2px -1px 3px;
@@ -318,12 +307,81 @@
     grid-column: 7 / 21;
 }
 
-.draggable-room{
-    min-height: 40px;
-}
-
 .draggable-room:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     transition: .2s ease-in-out 0s;
     cursor: pointer;
+}
+
+.draggable-room:hover:not(.large-room) {
+    border-color: orchid;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: black;
+}
+
+.border-box {
+    box-sizing: border-box;
+}
+
+.bt2 {
+    border-top-style: solid;
+    border-top-width: 2px;
+    border-color: black;
+}
+
+.br2 {
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-color: black;
+}
+
+.bb2 {
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-color: black;
+}
+
+.bl2 {
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-color: black;
+}
+
+.bt1 {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: black;
+}
+
+.br1 {
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: black;
+}
+
+.bb1 {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: black;
+}
+
+.bl1 {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-color: black;
+}
+
+.ba2 {
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+
+.bsr2 {
+    box-shadow: 2px 0 0 0 black;
+}
+
+.bsl2 {
+    box-shadow: -2px 0 0 0 black;
 }

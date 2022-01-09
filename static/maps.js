@@ -35,10 +35,10 @@ function create_hall_map(college) {
         cluster_east.className = "floor-map-hall--cluster-east floor-map-hall--lv-1";
 
         var floor_lobby = document.createElement('DIV');
-        floor_lobby.className = "floor-map-hall--floor-lobby floor-map-hall--lv-1";
+        floor_lobby.className = "floor-map-hall--floor-lobby floor-map-hall--lv-1 bl2 bb2 br2";
 
         var elevator_stairwell_only = document.createElement('DIV');
-        elevator_stairwell_only.className = "floor-map-hall--elevator-stairwell floor-map-hall--lv-1";
+        elevator_stairwell_only.className = "floor-map-hall--elevator-stairwell floor-map-hall--lv-1 ba2";
                 
         draw_west_cluster(cluster_west, 403, floor_name);
         draw_east_cluster(cluster_east, 404, floor_name);
@@ -110,13 +110,13 @@ function create_hall_map(college) {
 
     function draw_west_cluster(parent, cluster_num, floor_name) {
         var large_room = document.createElement('DIV');
-        large_room.className = "floor-map-hall--cluster-west large-room draggable-room";
+        large_room.className = "floor-map-hall--cluster-west large-room draggable-room ba2 border-box";
 
         var large_room_north_balcony = document.createElement('DIV');
-        large_room_north_balcony.className = "floor-map-hall--cluster-west large-room-north-balcony";
+        large_room_north_balcony.className = "floor-map-hall--cluster-west large-room-north-balcony bb2 border-box";
 
         var large_room_south_balcony = document.createElement('DIV');
-        large_room_south_balcony.className = "floor-map-hall--cluster-west large-room-south-balcony";
+        large_room_south_balcony.className = "floor-map-hall--cluster-west large-room-south-balcony bt2 border-box";
 
         large_room.appendChild(large_room_north_balcony);
         large_room.appendChild(large_room_south_balcony);
@@ -124,7 +124,18 @@ function create_hall_map(college) {
 
         for (let i = 1; i <= 5; i++) {
             var room = document.createElement('DIV');
-            room.className = `floor-map-hall--cluster-west ${i <= 2 ? "south-room" : "north-room"} west-cluster-${i} draggable-room`;
+            room.className = `floor-map-hall--cluster-west ${i <= 2 ? "south-room" : "north-room"} west-cluster-${i} draggable-room bt2 bb2 border-box`;
+            switch (i) {
+                case 1:
+                    room.classList.add("bl2");
+                    room.classList.add("bsr2");
+                    break;
+                case 5:
+                    break;
+                default:
+                    room.classList.add("br2");
+                    break;
+            }
             room.dataset.roomName = cluster_num + `.${i}`;
             room.dataset.floorName = floor_name;
             room.dataset.collegeName = college.college_name;
@@ -132,10 +143,10 @@ function create_hall_map(college) {
         }
 
         var bathroom_left = document.createElement('DIV');
-        bathroom_left.className = "floor-map-hall--cluster-west south-bathroom west-cluster-left-bathroom";
+        bathroom_left.className = "floor-map-hall--cluster-west south-bathroom west-cluster-left-bathroom bt2 bb2 br1 border-box";
 
         var bathroom_right = document.createElement('DIV');
-        bathroom_right.className = "floor-map-hall--cluster-west south-bathroom west-cluster-right-bathroom";
+        bathroom_right.className = "floor-map-hall--cluster-west south-bathroom west-cluster-right-bathroom bt2 bb2 bl1 border-box";
 
         parent.appendChild(bathroom_left);
         parent.appendChild(bathroom_right);
@@ -145,7 +156,7 @@ function create_hall_map(college) {
 
     function draw_east_cluster(parent, cluster_num, floor_name) {
         var large_room = document.createElement('DIV');
-        large_room.className = "floor-map-hall--cluster-east large-room draggable-room";
+        large_room.className = "floor-map-hall--cluster-east large-room draggable-room ba2";
 
         var large_room_north_balcony = document.createElement('DIV');
         large_room_north_balcony.className = "floor-map-hall--cluster-east large-room-north-balcony";
@@ -163,7 +174,22 @@ function create_hall_map(college) {
 
         for (let i = 1; i <= 5; i++) {
             var room = document.createElement('DIV');
-            room.className = `floor-map-hall--cluster-east ${i >= 4 ? "south-room" : "north-room"} east-cluster-${i} draggable-room`;
+            room.className = `floor-map-hall--cluster-east ${i >= 4 ? "south-room" : "north-room"} east-cluster-${i} draggable-room bt2 bb2 border-box`;
+            switch (i) {
+                case 3:
+                    break;
+                case 5:
+                    room.classList.add("bsl2");
+                    room.classList.add("br2");
+                    break;
+                case 4:
+                    room.classList.add("bl2");
+                    room.classList.add("br1");
+                    break;
+                default:
+                    room.classList.add("br2");
+                    break;
+            }
             room.dataset.roomName = cluster_num + `.${i}`;
             room.dataset.floorName = floor_name;
             room.dataset.collegeName = college.college_name;
@@ -171,10 +197,10 @@ function create_hall_map(college) {
         }
 
         var bathroom_left = document.createElement('DIV');
-        bathroom_left.className = "floor-map-hall--cluster-east south-bathroom east-cluster-left-bathroom";
+        bathroom_left.className = "floor-map-hall--cluster-east south-bathroom east-cluster-left-bathroom br1 bt2 bb2 border-box";
 
         var bathroom_right = document.createElement('DIV');
-        bathroom_right.className = "floor-map-hall--cluster-east south-bathroom east-cluster-right-bathroom";
+        bathroom_right.className = "floor-map-hall--cluster-east south-bathroom east-cluster-right-bathroom bl1 bt2 bb2 border-box";
 
         parent.appendChild(bathroom_left);
         parent.appendChild(bathroom_right);
@@ -236,13 +262,13 @@ function create_hall_map(college) {
 
     function draw_elevator_stairwell(parent) {
         var stairwell = document.createElement('DIV');
-        stairwell.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell stairwell";
+        stairwell.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell stairwell bl2 border-box";
 
         var elevator = document.createElement('DIV');
-        elevator.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell elevator";
+        elevator.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell elevator br2 bb2 border-box";
 
         var breaker_box = document.createElement('DIV');
-        breaker_box.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell breaker-box";
+        breaker_box.className = "floor-map-hall--lv-1 floor-map-hall--elevator-stairwell breaker-box br2 border-box";
 
         parent.appendChild(stairwell);
         parent.appendChild(elevator);
