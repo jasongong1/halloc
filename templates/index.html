@@ -6,15 +6,8 @@
 {% endblock %}
 
 {% block main %}
-<h3>
-    INDEX WIP
-</h3>
-<p>
-    hello, {{ current_user.zid }}
-</p>
 <div id="interactive-app-wrapper" class="">
     <div id="room-chosen-wrapper" class="">
-        chosen rooms
         <table class="table" id="preferences-table">
             <thead>
                 <tr>
@@ -52,7 +45,6 @@
         </button>
     </div>
     <div id="room-selector" class="">
-        room selector
         <br>
         <div class="container" id="college-and-floor-selector">
             <div class="row">
@@ -72,19 +64,15 @@
             </div>
         </div>
         <div id="college-map-container">
-            {% for college in colleges %}
-                {% set outer_loop = loop %}
-                {% for floor in college.college_floors %}
-                    <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" class="college-map-common" {{ "style=display:grid;" if outer_loop.index == 1 and loop.index == 1}}>
-                    </div>
+                {% for college in colleges %}
+                    {% set outer_loop = loop %}
+                    {% for floor in college.college_floors %}
+                        <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" class="college-map-common" {{ "style=display:grid;" if outer_loop.index == 1 and loop.index == 1}}>
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
         </div>
     </div>
-</div>
-
-<div>
-    halp :<
 </div>
 {% endblock %}
 

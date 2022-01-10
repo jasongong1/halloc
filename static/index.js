@@ -2,7 +2,9 @@ window.onload = function() {
     create_sortable_table();
     create_preference_bin();
     create_map_swapper();
+    enforce_map_aspect_ratio();
 }
+window.addEventListener("resize", enforce_map_aspect_ratio);
 
 async function delete_request(el) {
     await fetch("/delete_preference", {
@@ -167,14 +169,20 @@ var current_map_displayed = (function() {
         return curr_displayed_id;
     };
 
+    ret_mod.get_temp_level = function() {
+        return temp_displayed_id;
+    };
+
     ret_mod.set_curr_level = function(elem_str) {
         curr_displayed_id = elem_str;
+        temp_displayed_id = elem_str;
     };
 
     ret_mod.change_displayed_level = function(id_str) {
         document.getElementById(curr_displayed_id).style.display='none';
         document.getElementById(id_str).style.display='grid';
         curr_displayed_id=id_str;
+        reset_enforce_map_aspect_ratio();
     };
 
     ret_mod.temp_change_level = function(id_str) {
@@ -184,6 +192,7 @@ var current_map_displayed = (function() {
         }
         document.getElementById(curr_displayed_id).style.display='none';
         document.getElementById(id_str).style.display='grid';
+        reset_enforce_map_aspect_ratio();
     }
 
     ret_mod.undo_temp_change_level = function() {
@@ -192,6 +201,7 @@ var current_map_displayed = (function() {
         }
         document.getElementById(temp_displayed_id).style.display='none';
         document.getElementById(curr_displayed_id).style.display='grid';
+        reset_enforce_map_aspect_ratio();
     }
 
     return ret_mod;
@@ -213,4 +223,35 @@ function create_map_swapper() {
             current_map_displayed.undo_temp_change_level();
         })
     });
+}
+
+function enforce_map_aspect_ratio() {
+    console.log("enforcing map aspect ratio");
+    var displayed_map_el = document.getElementById(current_map_displayed.get_curr_level());
+    var temp_displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
+    displayed_map_el = displayed_map_el == temp_displayed_map_el ? displayed_map_el : temp_displayed_map_el;
+    var aspect_ratio_str = displayed_map_el.dataset.aspectRatio;
+    var aspect_ratio_split = aspect_ratio_str.split('/');
+    var aspect_ratio = aspect_ratio_split.length > 1 ? parseInt(aspect_ratio_split[0], 10) / parseInt(aspect_ratio_split[1], 10) : parseInt(aspect_ratio_split[0], 10);
+    console.log(`aspect ratio: ${aspect_ratio}`);
+
+
+    var parent_height = displayed_map_el.parentElement.clientHeight;
+    var parent_width = displayed_map_el.parentElement.clientWidth;
+
+    if (parent_width > aspect_ratio * parent_height) {
+        displayed_map_el.style.width = `${aspect_ratio * parent_height}px`;
+        displayed_map_el.style.height = `${parent_height}px`;
+    } else {
+        displayed_map_el.style.width = `${parent_width}px`;
+        displayed_map_el.style.height = `${(1 / aspect_ratio) * parent_width}px`;
+    }
+
+    console.log(displayed_map_el.parentElement.clientHeight);
+    console.log(displayed_map_el.parentElement.clientWidth);
+}
+
+function reset_enforce_map_aspect_ratio() {
+    window.addEventListener("resize", enforce_map_aspect_ratio);
+    enforce_map_aspect_ratio();
 }
