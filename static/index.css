@@ -22,23 +22,57 @@ padding: 5px 10px;
 opacity: .6;
 }
 
-/* #preferences-table {
-    height: 100%;
-} */
-
-#preferences-table tbody {
-    /* display: block; */
-    overflow: auto;
-    background-color: lightpink;
+#preferences-table {
+    table-layout: fixed;
 }
 
-#preference-table-body-height-filler {
+#preferences-table thead {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    background-color: lightsteelblue;
+}
+
+#preferences-table tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    background-color: lightpink;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 500px;
+}
+
+#preferences-table tbody tr,
+#preferences-table thead tr {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.td-rank {
+    width: 20%;
+}
+
+.td-room-name {
+    width: 50%;
+}
+
+.td-floor-level {
+    width: 10%;
+}
+
+.td-college-name {
+    width: 20%;
+}
+
+/* #preference-table-body-height-filler {
     height: auto;
     width: 98%;
     background-color: lightseagreen;
     overflow-y: visible;
     position: absolute;
-}
+} */
 
 /* #preferences-table thead tr {
     display: block;

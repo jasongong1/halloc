@@ -59,13 +59,20 @@ function create_sortable_table() {
             var header_cell_rank = document.createElement("TH");
             header_cell_rank.scope = "row";
             header_cell_rank.innerHTML = evt.newIndex + 1;
+            header_cell_rank.classList.add("td-rank");
             new_row.appendChild(header_cell_rank);
+
             var room_name_cell = new_row.insertCell(-1);
             room_name_cell.innerHTML = evt.item.dataset.roomName;
+            header_cell_rank.classList.add("td-room-name");
+
             var floor_name_cell = new_row.insertCell(-1);
             floor_name_cell.innerHTML = evt.item.dataset.floorName;
+            header_cell_rank.classList.add("td-floor-level");
+
             var college_name_cell = new_row.insertCell(-1);
             college_name_cell.innerHTML = evt.item.dataset.collegeName;
+            header_cell_rank.classList.add("td-college-name");
             // evt.item.replaceWith(new_row);
             var new_row = 
             await insert_request(new_row, Math.min(evt.newIndex, num_preferences_in_table()) + 1);
@@ -80,11 +87,11 @@ function num_preferences_in_table() {
 }
 
 function enforce_preference_table_filler() {
-    console.log("enforce table filler");
-    var filler_tr = document.getElementById("preference-table-body-height-filler");
-    console.log(filler_tr.clientHeight);
-    console.log(filler_tr.parentElement.clientHeight);
-    filler_tr.style.height = `calc(100% - ${filler_tr.parentElement.clientHeight}px - 110px)`;
+    // console.log("enforce table filler");
+    // var filler_tr = document.getElementById("preference-table-body-height-filler");
+    // console.log(filler_tr.clientHeight);
+    // console.log(filler_tr.parentElement.clientHeight);
+    // filler_tr.style.height = `calc(100% - ${filler_tr.parentElement.clientHeight}px - 110px)`;
 }
 
 function create_preference_bin() {
@@ -133,14 +140,21 @@ async function update_table(table_id) {
             var header_cell_rank = document.createElement("TH");
             header_cell_rank.innerHTML = preference.rank;
             header_cell_rank.scope = "row";
+            header_cell_rank.classList.add("td-rank");
             curr_row.appendChild(header_cell_rank);
 
             var room_name_cell = curr_row.insertCell(-1);
             room_name_cell.innerHTML = preference.room_name;
-            var floor_cell = curr_row.insertCell(-1);
-            floor_cell.innerHTML = preference.floor_level;
-            var college_cell = curr_row.insertCell(-1);
-            college_cell.innerHTML = preference.college_name;
+            room_name_cell.classList.add("td-room-name");
+
+            var floor_name_cell = curr_row.insertCell(-1);
+            floor_name_cell.innerHTML = preference.floor_level;
+            floor_name_cell.classList.add("td-floor-level");
+
+            var college_name_cell = curr_row.insertCell(-1);
+            college_name_cell.innerHTML = preference.college_name;
+            college_name_cell.classList.add("td-college-name");
+
         });
         table.dataset.numPreferences = data.preference_list.length;
         var filler_row = table.insertRow(-1);
