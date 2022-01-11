@@ -3,6 +3,7 @@ window.onload = function() {
     create_preference_bin();
     create_map_swapper();
     enforce_map_aspect_ratio();
+    enforce_preference_table_filler();
 }
 window.addEventListener("resize", enforce_map_aspect_ratio);
 
@@ -44,7 +45,7 @@ function create_sortable_table() {
                 document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
                 if (evt.oldIndex != evt.newIndex) {
                     await delete_request(evt.item);
-                    await insert_request(evt.item, evt.newIndex + 1);
+                    await insert_request(evt.item, Math.min(evt.newIndex, num_preferences_in_table()) + 1);
                     await update_table('preference-table-body');
                 }
                 preference_list_sortable.option("disabled", false);
@@ -52,7 +53,7 @@ function create_sortable_table() {
             }
         },
         onAdd: async function(evt) {
-            console.log('printed new row');
+            // console.log('printed new row');
             var new_row = document.createElement("TR");
             new_row.className += " preference-list-row";
             var header_cell_rank = document.createElement("TH");
@@ -65,12 +66,25 @@ function create_sortable_table() {
             floor_name_cell.innerHTML = evt.item.dataset.floorName;
             var college_name_cell = new_row.insertCell(-1);
             college_name_cell.innerHTML = evt.item.dataset.collegeName;
-            evt.item.replaceWith(new_row);
-            await insert_request(new_row, evt.newIndex + 1);
+            // evt.item.replaceWith(new_row);
+            var new_row = 
+            await insert_request(new_row, Math.min(evt.newIndex, num_preferences_in_table()) + 1);
             await update_table('preference-table-body');
         }
     });
     return preference_list_sortable;
+}
+
+function num_preferences_in_table() {
+    return document.getElementById("preference-table-body").dataset.numPreferences;
+}
+
+function enforce_preference_table_filler() {
+    console.log("enforce table filler");
+    var filler_tr = document.getElementById("preference-table-body-height-filler");
+    console.log(filler_tr.clientHeight);
+    console.log(filler_tr.parentElement.clientHeight);
+    filler_tr.style.height = `calc(100% - ${filler_tr.parentElement.clientHeight}px - 110px)`;
 }
 
 function create_preference_bin() {
@@ -128,6 +142,10 @@ async function update_table(table_id) {
             var college_cell = curr_row.insertCell(-1);
             college_cell.innerHTML = preference.college_name;
         });
+        table.dataset.numPreferences = data.preference_list.length;
+        var filler_row = table.insertRow(-1);
+        filler_row.id = "preference-table-body-height-filler";
+        enforce_preference_table_filler();
     })
 }
 
@@ -182,6 +200,7 @@ var current_map_displayed = (function() {
         document.getElementById(curr_displayed_id).style.display='none';
         document.getElementById(id_str).style.display='grid';
         curr_displayed_id=id_str;
+        temp_displayed_id=id_str;
         reset_enforce_map_aspect_ratio();
     };
 
@@ -201,6 +220,7 @@ var current_map_displayed = (function() {
         }
         document.getElementById(temp_displayed_id).style.display='none';
         document.getElementById(curr_displayed_id).style.display='grid';
+        temp_displayed_id=curr_displayed_id;
         reset_enforce_map_aspect_ratio();
     }
 
@@ -226,18 +246,21 @@ function create_map_swapper() {
 }
 
 function enforce_map_aspect_ratio() {
-    console.log("enforcing map aspect ratio");
-    var displayed_map_el = document.getElementById(current_map_displayed.get_curr_level());
-    var temp_displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
-    displayed_map_el = displayed_map_el == temp_displayed_map_el ? displayed_map_el : temp_displayed_map_el;
+    // console.log("enforcing map aspect ratio");
+    // var displayed_map_el = document.getElementById(current_map_displayed.get_curr_level());
+    var displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
+    // displayed_map_el = displayed_map_el == temp_displayed_map_el ? displayed_map_el : temp_displayed_map_el;
     var aspect_ratio_str = displayed_map_el.dataset.aspectRatio;
     var aspect_ratio_split = aspect_ratio_str.split('/');
     var aspect_ratio = aspect_ratio_split.length > 1 ? parseInt(aspect_ratio_split[0], 10) / parseInt(aspect_ratio_split[1], 10) : parseInt(aspect_ratio_split[0], 10);
-    console.log(`aspect ratio: ${aspect_ratio}`);
+    // console.log(`aspect ratio: ${aspect_ratio}`);
 
 
     var parent_height = displayed_map_el.parentElement.clientHeight;
     var parent_width = displayed_map_el.parentElement.clientWidth;
+
+    // console.log(displayed_map_el.parentElement.clientHeight);
+    // console.log(displayed_map_el.parentElement.clientWidth);
 
     if (parent_width > aspect_ratio * parent_height) {
         displayed_map_el.style.width = `${aspect_ratio * parent_height}px`;
@@ -247,8 +270,8 @@ function enforce_map_aspect_ratio() {
         displayed_map_el.style.height = `${(1 / aspect_ratio) * parent_width}px`;
     }
 
-    console.log(displayed_map_el.parentElement.clientHeight);
-    console.log(displayed_map_el.parentElement.clientWidth);
+    // console.log(displayed_map_el.style.width);
+    // console.log(displayed_map_el.style.height);
 }
 
 function reset_enforce_map_aspect_ratio() {

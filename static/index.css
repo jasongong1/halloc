@@ -22,9 +22,22 @@ padding: 5px 10px;
 opacity: .6;
 }
 
+/* #preferences-table {
+    height: 100%;
+} */
+
 #preferences-table tbody {
     /* display: block; */
     overflow: auto;
+    background-color: lightpink;
+}
+
+#preference-table-body-height-filler {
+    height: auto;
+    width: 98%;
+    background-color: lightseagreen;
+    overflow-y: visible;
+    position: absolute;
 }
 
 /* #preferences-table thead tr {

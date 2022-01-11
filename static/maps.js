@@ -44,7 +44,7 @@ function create_hall_map(college) {
             return;
         }
         parent.classList.add("hall-1");
-        parent.dataset.aspectRatio = "16 / 9";
+        parent.dataset.aspectRatio = "21 / 9";
 
         var cluster_west = document.createElement('DIV');
         cluster_west.className = "floor-map-hall--cluster-west floor-map-hall--lv-1";
@@ -75,7 +75,7 @@ function create_hall_map(college) {
 
         var cluster_num_west = 405 + ((level - 2) * 4);
         parent.classList.add("hall-mid");
-        parent.dataset.aspectRatio = "16 / 9";
+        parent.dataset.aspectRatio = "28 / 21";
 
         var cluster_west = document.createElement('DIV');
         cluster_west.className = "floor-map-hall--cluster-west floor-map-hall--lv-mid";
@@ -110,10 +110,12 @@ function create_hall_map(college) {
         var cluster_num = (422 + ((level - 6) * 2)).toString();
 
         parent.classList.add("hall-upper");
-        parent.dataset.aspectRatio = "16 / 9";
-        
+        parent.dataset.aspectRatio = "2 / 5";
+        // 2 / 5 if no east west cluster
+
         var cluster_north = document.createElement('DIV');
         cluster_north.className = "floor-map-hall--cluster-north floor-map-hall--lv-upper";
+
 
         var floor_lobby = document.createElement('DIV');
         floor_lobby.className = "floor-map-hall--floor-lobby floor-map-hall--lv-upper ba2 border-box";

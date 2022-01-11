@@ -29,7 +29,7 @@
 }
 
 .floor-map-hall--cluster-west.floor-map-hall--lv-1 {
-    grid-row: 6 / 17;
+    grid-row: 5 / 17;
 }
 
 .floor-map-hall--cluster-west.floor-map-hall--lv-mid {
@@ -43,7 +43,7 @@
     display: grid;
 }
 .floor-map-hall--cluster-east.floor-map-hall--lv-1 {
-    grid-row: 6 / 17;
+    grid-row: 5 / 17;
 }
 .floor-map-hall--cluster-east.floor-map-hall--lv-mid {
     grid-row: 21 / 34;
@@ -72,7 +72,7 @@
 }
 .floor-map-hall--floor-lobby.floor-map-hall--lv-1 {
     grid-column: 17 / 25;
-    grid-row: 6 / 15;
+    grid-row: 5 / 15;
 }
 .floor-map-hall--floor-lobby.floor-map-hall--lv-mid {
     grid-column: 17 / 25;
@@ -84,10 +84,11 @@
 }
 .floor-map-hall--lv-1.floor-map-hall--elevator-stairwell {
     background-color: hotpink;
-    grid-row: 1 / 6;
+    grid-row: 1 / 5;
     grid-column: 16 / 26;
     display: grid;
 }
+
 /* LV 1 ONLY - ELEVATOR, STAIRWELL */
 .floor-map-hall--lv-1.stairwell {
     grid-row: 1 / 21;
