@@ -19,6 +19,11 @@ def login_post():
     # login code goes here
     zid = request.form.get('zid')
     password = request.form.get('password')
+
+    if not (zid and password):
+        flash('Please check your login details and try again.', 'warning')
+        return redirect(url_for('auth.login'))
+
     remember = True if request.form.get('remember') else False
 
     user = User.query.filter_by(zid=zid).first()
@@ -55,7 +60,7 @@ def register_post():
         hash=generate_password_hash(password, method='sha256')
     )
     
-    # GIVES PERMS FOR ALL USERS TO ACCESS ALL COLLEGES
+    # GIVES PERMS FOR ALL USERS TO ACCESS ALL COLLEGES FOR DEMO ONLY
     colleges = College.query.all()
     for college in colleges:
         new_user_college_join = UserCollegeJoin(

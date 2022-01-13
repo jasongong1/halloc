@@ -2,6 +2,8 @@ window.onload = function() {
     create_sortable_table();
     create_preference_bin();
     create_map_swapper();
+    create_college_button_swapper();
+    
     enforce_app_layout();
     enforce_room_selector_layout();
     enforce_table_height();
@@ -229,14 +231,14 @@ var current_college_selected = (function() {
         curr_selected_college_id = elem_str;
     };
 
-    ret_mod.change_displayed_college = function(id_str) {
-        var new_displayed_college_button_bar = document.getElementById(`button-bar-${id_str}`);
+    ret_mod.change_displayed_college = function(evt) {
+        var new_displayed_college_button_bar = document.getElementById(`button-bar-${evt.target.value}`);
         if (!new_displayed_college_button_bar) {
             return;
         }
         document.getElementById(`button-bar-${curr_selected_college_id}`).style.display='none';
         new_displayed_college_button_bar.style.display='flex';
-        curr_selected_college_id=id_str;
+        curr_selected_college_id=evt.target.value;
         var floor_id = new_displayed_college_button_bar.children[0].id.split("btn-floor-")[1];
         current_map_displayed.change_displayed_level(`map-floor-${floor_id}`)
     };
@@ -294,6 +296,20 @@ var current_map_displayed = (function() {
     return ret_mod;
 })();
 
+function create_college_button_swapper() {
+    console.log('created college button swapper');
+    var college_options = document.getElementsByClassName("college-select-option");
+    // for (var i = 0; i < college_options.length; i++) {
+    //     console.log(i);
+    //     college_options[i].addEventListener('click', function(evt) {
+    //         console.log("clicked");
+    //         current_college_selected.change_displayed_college(evt);
+    //     });
+    // }
+    const select = document.getElementById("college-select");
+    select.addEventListener('change', current_college_selected.change_displayed_college);
+}
+
 function create_map_swapper() {
     var all_maps = document.querySelectorAll('*[id^="map-floor-"]');
     var floor_init = false;
@@ -313,21 +329,14 @@ function create_map_swapper() {
 }
 
 function enforce_map_aspect_ratio() {
-    // console.log("enforcing map aspect ratio");
-    // var displayed_map_el = document.getElementById(current_map_displayed.get_curr_level());
     var displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
-    // displayed_map_el = displayed_map_el == temp_displayed_map_el ? displayed_map_el : temp_displayed_map_el;
     var aspect_ratio_str = displayed_map_el.dataset.aspectRatio;
     var aspect_ratio_split = aspect_ratio_str.split('/');
     var aspect_ratio = aspect_ratio_split.length > 1 ? parseInt(aspect_ratio_split[0], 10) / parseInt(aspect_ratio_split[1], 10) : parseInt(aspect_ratio_split[0], 10);
-    // console.log(`aspect ratio: ${aspect_ratio}`);
 
 
     var parent_height = displayed_map_el.parentElement.clientHeight;
     var parent_width = displayed_map_el.parentElement.clientWidth;
-
-    // console.log(displayed_map_el.parentElement.clientHeight);
-    // console.log(displayed_map_el.parentElement.clientWidth);
 
     if (parent_width > aspect_ratio * parent_height) {
         displayed_map_el.style.width = `${aspect_ratio * parent_height}px`;
@@ -336,9 +345,6 @@ function enforce_map_aspect_ratio() {
         displayed_map_el.style.width = `${parent_width}px`;
         displayed_map_el.style.height = `${(1 / aspect_ratio) * parent_width}px`;
     }
-
-    // console.log(displayed_map_el.style.width);
-    // console.log(displayed_map_el.style.height);
 }
 
 function reset_enforce_map_aspect_ratio() {

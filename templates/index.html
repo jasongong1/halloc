@@ -48,9 +48,10 @@
     <div id="room-selector" class="">
         <div class="" id="college-and-floor-selector">
             <label for="colleges" class="sr-only">College: </label>
-            <select id="college-select" name="colleges" class="form-select col"  {{ 'disabled' if colleges|length <= 1}}>
+            <select id="college-select" name="colleges" class="form-select col" title="select-college" {{ 'disabled' if colleges|length <= 1}}>
                 {% for college in colleges %}
-                <option value={{ college.college_name }} id="college-id-{{college.college_id}}" class="college-select-option" data-college-id="{{college.college_id}}" onclick="current_college_selected.change_displayed_college('college-id-{{ college.college_id }}')">{{ college.college_name }}</option>
+                <option value="college-id-{{college.college_id}}" id="college-id-{{college.college_id}}" class="college-select-option" data-college-id="{{college.college_id}}">{{ college.college_name }}</option>
+                <!-- onclick="current_college_selected.change_displayed_college('college-id-{{ college.college_id }}')" -->
                 {% endfor %}
             </select>
             <div id="button-bar-wrapper">
@@ -64,13 +65,13 @@
             </div>
         </div>
         <div id="college-map-container">
-                {% for college in colleges %}
-                    {% set outer_loop = loop %}
-                    {% for floor in college.college_floors %}
-                        <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" class="college-map-common" {{ "style=display:grid;" if outer_loop.index == 1 and loop.index == 1}}>
-                        </div>
-                    {% endfor %}
+            {% for college in colleges %}
+                {% set outer_loop = loop %}
+                {% for floor in college.college_floors %}
+                    <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" class="college-map-common" {{ "style=display:grid;" if outer_loop.index == 1 and loop.index == 1}} data-aspect-ratio = "1 / 1">
+                    </div>
                 {% endfor %}
+            {% endfor %}
         </div>
     </div>
 </div>
