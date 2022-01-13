@@ -2,10 +2,17 @@ window.onload = function() {
     create_sortable_table();
     create_preference_bin();
     create_map_swapper();
+    enforce_app_layout();
+    enforce_room_selector_layout();
+    enforce_table_height();
     enforce_map_aspect_ratio();
-    enforce_preference_table_filler();
 }
+// window.matchMedia("(max-width: 768px)").addEventListener('change', enforce_app_layout);
+// cannot use matchmedia as table height function must run after app layout enforcer
+window.addEventListener("resize", enforce_app_layout);
+window.addEventListener("resize", enforce_room_selector_layout);
 window.addEventListener("resize", enforce_map_aspect_ratio);
+window.addEventListener("resize", enforce_table_height);
 
 async function delete_request(el) {
     await fetch("/delete_preference", {
@@ -86,7 +93,53 @@ function num_preferences_in_table() {
     return document.getElementById("preference-table-body").dataset.numPreferences;
 }
 
-function enforce_preference_table_filler() {
+function enforce_app_layout() {
+    var interactive_app_wrapper = document.getElementById("interactive-app-wrapper");
+    var room_chosen_wrapper = document.getElementById("room-chosen-wrapper");
+    var room_selector_wrapper = document.getElementById("room-selector");
+
+    if (window.matchMedia("(max-width: 850px)").matches) {
+        interactive_app_wrapper.style.gridTemplateColumns = "1fr";
+        interactive_app_wrapper.style.gridTemplateRows = "1fr 1fr";
+        room_chosen_wrapper.style.height = `${interactive_app_wrapper.clientHeight / 2 - 5}px`;
+        room_selector_wrapper.style.height = `${interactive_app_wrapper.clientHeight / 2 - 5}px`;
+    } else {
+        interactive_app_wrapper.style.gridTemplateColumns = "1fr 1fr";
+        interactive_app_wrapper.style.gridTemplateRows = "1fr";
+        room_chosen_wrapper.style.height = `${interactive_app_wrapper.clientHeight}px`;
+        room_selector_wrapper.style.height = `${interactive_app_wrapper.clientHeight}px`;
+    }
+}
+
+function enforce_room_selector_layout() {
+    var room_selector_wrapper = document.getElementById("room-selector");
+    var college_floor_selector_wrapper = document.getElementById("college-and-floor-selector");
+    var college_map_container = document.getElementById("college-map-container");
+    if (room_selector_wrapper.clientWidth < 550) {
+        college_floor_selector_wrapper.style.gridTemplateColumns = "1fr";
+        college_floor_selector_wrapper.style.gridTemplateRows = "1fr 1fr";
+        college_map_container.style.height = "calc(100% - 130px)"
+    } else {
+        college_floor_selector_wrapper.style.gridTemplateColumns = "1fr 2fr";
+        college_floor_selector_wrapper.style.gridTemplateRows = "1fr";
+        college_map_container.style.height = "calc(100% - 80px)"
+    }
+}
+
+function enforce_table_height() {
+    var table_body = document.getElementById("preference-table-body");
+    var room_chosen_wrapper = document.getElementById("room-chosen-wrapper");
+    table_body.style.height = `${room_chosen_wrapper.clientHeight - 120}px`;
+    if (table_body.scrollHeight > table_body.clientHeight) {
+        document.getElementById("preference-table-head").style.width = `${table_body.clientWidth}px`;
+    }
+
+    // var interactive_app_wrapper = document.getElementById("interactive-app-wrapper");
+    // table_body.style.height = `${interactive_app_wrapper.clientHeight - 120}px`;
+    // if (table_body.scrollHeight > table_body.clientHeight) {
+    //     document.getElementById("preference-table-head").style.width = `${table_body.clientWidth}px`;
+    // }
+
     // console.log("enforce table filler");
     // var filler_tr = document.getElementById("preference-table-body-height-filler");
     // console.log(filler_tr.clientHeight);
@@ -159,12 +212,12 @@ async function update_table(table_id) {
         table.dataset.numPreferences = data.preference_list.length;
         var filler_row = table.insertRow(-1);
         filler_row.id = "preference-table-body-height-filler";
-        enforce_preference_table_filler();
+        enforce_table_height();
     })
 }
 
 var current_college_selected = (function() {
-    var curr_selected_college_id = "college-id-2";
+    var curr_selected_college_id = "college-id-1";
 
     var ret_mod = {};
 
@@ -289,6 +342,7 @@ function enforce_map_aspect_ratio() {
 }
 
 function reset_enforce_map_aspect_ratio() {
+    window.removeEventListener("resize", enforce_map_aspect_ratio);
     window.addEventListener("resize", enforce_map_aspect_ratio);
     enforce_map_aspect_ratio();
 }

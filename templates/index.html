@@ -9,7 +9,7 @@
 <div id="interactive-app-wrapper" class="">
     <div id="room-chosen-wrapper" class="">
         <table class="table" id="preferences-table">
-            <thead>
+            <thead id="preference-table-head">
                 <tr>
                     <th scope="col" class="td-rank">rank</th>
                     <th scope="col" class="td-room-name">room name</th>
@@ -46,17 +46,16 @@
         </button>
     </div>
     <div id="room-selector" class="">
-        <br>
-        <div class="container" id="college-and-floor-selector">
-            <div class="row">
-                <label for="colleges" class="sr-only">College: </label>
-                <select id="college-select" name="colleges" class="form-select col"  {{ 'disabled' if colleges|length <= 1}}>
-                    {% for college in colleges %}
-                        <option value={{ college.college_name }} id="college-id-{{college.college_id}}" class="college-select-option" data-college-id="{{college.college_id}}" onclick="current_college_selected.change_displayed_college('college-id-{{ college.college_id }}')">{{ college.college_name }}</option>
-                    {% endfor %}
-                </select>
+        <div class="" id="college-and-floor-selector">
+            <label for="colleges" class="sr-only">College: </label>
+            <select id="college-select" name="colleges" class="form-select col"  {{ 'disabled' if colleges|length <= 1}}>
                 {% for college in colleges %}
-                <div id="button-bar-college-id-{{college.college_id}}" data-college-id = "{{college.college_id}}" class="btn-group col-8" role="group" {% if loop.index != 1 %} style="display: none;" {% endif %}>
+                <option value={{ college.college_name }} id="college-id-{{college.college_id}}" class="college-select-option" data-college-id="{{college.college_id}}" onclick="current_college_selected.change_displayed_college('college-id-{{ college.college_id }}')">{{ college.college_name }}</option>
+                {% endfor %}
+            </select>
+            <div id="button-bar-wrapper">
+                {% for college in colleges %}
+                <div id="button-bar-college-id-{{college.college_id}}" data-college-id = "{{college.college_id}}" class="btn-group button-bar" role="group" {% if loop.index != 1 %} style="display: none;" {% endif %}>
                     {% for floor in college.college_floors %}
                     <button type="button" class="btn btn-secondary" id="btn-floor-{{floor.id}}" onclick="current_map_displayed.change_displayed_level('map-floor-{{ floor.id }}')">{{ floor.floor_level }}</button>
                     {% endfor %}
