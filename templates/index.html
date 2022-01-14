@@ -56,7 +56,7 @@
             </select>
             <div id="button-bar-wrapper">
                 {% for college in colleges %}
-                <div id="button-bar-college-id-{{college.college_id}}" data-college-id = "{{college.college_id}}" class="btn-group button-bar" role="group" {% if loop.index != 1 %} style="display: none;" {% endif %}>
+                <div id="button-bar-college-id-{{college.college_id}}" data-college-id = "{{college.college_id}}" class="btn-group button-bar" role="group" style="display: none">
                     {% for floor in college.college_floors %}
                     <button type="button" class="btn btn-secondary" id="btn-floor-{{floor.id}}" onclick="current_map_displayed.change_displayed_level('map-floor-{{ floor.id }}')">{{ floor.floor_level }}</button>
                     {% endfor %}
@@ -68,7 +68,7 @@
             {% for college in colleges %}
                 {% set outer_loop = loop %}
                 {% for floor in college.college_floors %}
-                    <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" class="college-map-common" {{ "style=display:grid;" if outer_loop.index == 1 and loop.index == 1}} data-aspect-ratio = "1 / 1">
+                    <div id="map-floor-{{ floor.id }}" data-floor-id = "{{ floor.id }}" data-college-id = "{{ college.college_id }}" class="college-map-common">
                     </div>
                 {% endfor %}
             {% endfor %}

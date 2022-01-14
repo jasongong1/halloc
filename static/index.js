@@ -1,8 +1,8 @@
 window.onload = function() {
     create_sortable_table();
     create_preference_bin();
-    create_map_swapper();
     create_college_button_swapper();
+    create_map_swapper();
     
     enforce_app_layout();
     enforce_room_selector_layout();
@@ -219,7 +219,7 @@ async function update_table(table_id) {
 }
 
 var current_college_selected = (function() {
-    var curr_selected_college_id = "college-id-1";
+    var curr_selected_college_id = document.getElementById("college-select").value;
 
     var ret_mod = {};
 
@@ -231,16 +231,16 @@ var current_college_selected = (function() {
         curr_selected_college_id = elem_str;
     };
 
-    ret_mod.change_displayed_college = function(evt) {
-        var new_displayed_college_button_bar = document.getElementById(`button-bar-${evt.target.value}`);
+    ret_mod.change_displayed_college = function(elem_str) {
+        var new_displayed_college_button_bar = document.getElementById(`button-bar-${elem_str}`);
         if (!new_displayed_college_button_bar) {
             return;
         }
         document.getElementById(`button-bar-${curr_selected_college_id}`).style.display='none';
         new_displayed_college_button_bar.style.display='flex';
-        curr_selected_college_id=evt.target.value;
+        curr_selected_college_id=elem_str;
         var floor_id = new_displayed_college_button_bar.children[0].id.split("btn-floor-")[1];
-        current_map_displayed.change_displayed_level(`map-floor-${floor_id}`)
+        current_map_displayed.change_displayed_level(`map-floor-${floor_id}`);
     };
 
     return ret_mod;
@@ -266,7 +266,9 @@ var current_map_displayed = (function() {
     };
 
     ret_mod.change_displayed_level = function(id_str) {
-        document.getElementById(curr_displayed_id).style.display='none';
+        if (curr_displayed_id) {
+            document.getElementById(curr_displayed_id).style.display='none';
+        }
         document.getElementById(id_str).style.display='grid';
         curr_displayed_id=id_str;
         temp_displayed_id=id_str;
@@ -297,17 +299,12 @@ var current_map_displayed = (function() {
 })();
 
 function create_college_button_swapper() {
-    console.log('created college button swapper');
-    var college_options = document.getElementsByClassName("college-select-option");
-    // for (var i = 0; i < college_options.length; i++) {
-    //     console.log(i);
-    //     college_options[i].addEventListener('click', function(evt) {
-    //         console.log("clicked");
-    //         current_college_selected.change_displayed_college(evt);
-    //     });
-    // }
     const select = document.getElementById("college-select");
-    select.addEventListener('change', current_college_selected.change_displayed_college);
+    select.addEventListener('change', function(evt) {
+        current_college_selected.change_displayed_college(evt.target.value);
+    });
+    current_college_selected.set_curr_college(select.value);
+    current_college_selected.change_displayed_college(select.value);
 }
 
 function create_map_swapper() {
@@ -315,8 +312,9 @@ function create_map_swapper() {
     var floor_init = false;
     all_maps.forEach((map) => {
         floor_id = map.id.split("map-floor-")[1];
-        if (!floor_init) {
+        if (!floor_init && `college-id-${map.dataset.collegeId}` == current_college_selected.get_curr_college()) {
             current_map_displayed.set_curr_level(`map-floor-${floor_id}`);
+            current_map_displayed.change_displayed_level(`map-floor-${floor_id}`);
             floor_init = true;
         }
         document.getElementById(`btn-floor-${floor_id}`).addEventListener("mouseover", function() {
@@ -331,6 +329,9 @@ function create_map_swapper() {
 function enforce_map_aspect_ratio() {
     var displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
     var aspect_ratio_str = displayed_map_el.dataset.aspectRatio;
+    if (!aspect_ratio_str) {
+        return;
+    }
     var aspect_ratio_split = aspect_ratio_str.split('/');
     var aspect_ratio = aspect_ratio_split.length > 1 ? parseInt(aspect_ratio_split[0], 10) / parseInt(aspect_ratio_split[1], 10) : parseInt(aspect_ratio_split[0], 10);
 

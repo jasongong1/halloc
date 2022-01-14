@@ -98,6 +98,7 @@ opacity: .6;
 
 .button-bar {
     width: 100%;
+    display: none;
 }
 
 #college-select {
