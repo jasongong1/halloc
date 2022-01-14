@@ -3,6 +3,5 @@
 # git ls-files -v|grep '^h'
 
 secret_key=''
-secret_password_salt=''
+security_password_salt=''
 auth_email_address=''
-auth_email_password=''
