@@ -1,33 +1,44 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .secret import secret_key
+from flask_mail import Mail
+from .secret import secret_key, security_password_salt, auth_email_address
+import os
 
 db = SQLAlchemy()
 
-def create_app():
-    app = Flask(__name__)
+app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = secret_key
-    app.config['SECRET_KEY'] = secret_key
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rooms.db'
+app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
-    db.init_app(app)
+app.config['MAIL_USERNAME'] = os.environ['APP_MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['APP_MAIL_PASSWORD']
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
+app.config['MAIL_DEFAULT_SENDER'] = auth_email_address
 
-    from .models import User
+mail = Mail(app)
 
-    @login_manager.user_loader
-    def load_user(zid):
-        return User.query.get(int(zid))
+app.config['SECRET_KEY'] = secret_key
+app.config['SECURITY_PASSWORD_SALT'] = security_password_salt
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rooms.db'
 
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+db.init_app(app)
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.init_app(app)
 
-    return app
+from .models import User
+
+@login_manager.user_loader
+def load_user(zid):
+    return User.query.get(int(zid))
+
+from .auth import auth as auth_blueprint
+app.register_blueprint(auth_blueprint)
+
+from .main import main as main_blueprint
+app.register_blueprint(main_blueprint)

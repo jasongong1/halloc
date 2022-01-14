@@ -1,9 +1,11 @@
-import re
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from . import db
 from .models import User, College, UserCollegeJoin
+from .email_helper import send_email
+from .token_helper import generate_confirmation_token, confirm_token
 
 auth = Blueprint('auth', __name__)
 
@@ -54,9 +56,11 @@ def register_post():
         flash('user already exists', 'warning')
         return redirect(url_for('auth.register'))
 
+    unsw_email_address = f"z{zid}@unsw.edu.au"
+
     new_user = User(
         zid=zid, 
-        email=f"z{zid}@unsw.edu.au" if not email else email,
+        email=unsw_email_address if not email else email,
         hash=generate_password_hash(password, method='sha256')
     )
     
@@ -70,12 +74,37 @@ def register_post():
         db.session.add(new_user_college_join)
     # END
 
+
+    token = generate_confirmation_token(unsw_email_address)
+
+    confirm_url = url_for('auth.confirm_email', token=token, _external=True)
+    send_email(unsw_email_address, "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
+
     db.session.add(new_user)
     db.session.commit()
 
     login_user(new_user, remember=remember)
+    flash('A confirmation email has been sent via email.', 'success')
     
     return redirect(url_for('main.home'))
+
+@auth.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    user = User.query.filter_by(zid=current_user.zid).first_or_404()
+    if user.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.confirmed = True
+        db.session.add(user)
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('auth.login'))
+
 
 @auth.route('/logout')
 @login_required

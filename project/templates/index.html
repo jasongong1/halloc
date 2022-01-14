@@ -5,6 +5,19 @@
 <link href="/static/maps.css" rel="stylesheet">
 {% endblock %}
 
+{% block navbar %}
+<nav class="navbar navbar-expand-md navbar-light bg-light justify-content-between">
+    <span class="navbar-brand">
+        LOGO HERE
+    </span>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
 {% block main %}
 <div id="interactive-app-wrapper" class="">
     <div id="room-chosen-wrapper" class="">

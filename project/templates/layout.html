@@ -2,8 +2,6 @@
 
 <html lang="en">
 
-    {% set noNavbarEndpoints = ['auth.login', 'auth.register'] %}
-
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, width=device-width">
@@ -34,18 +32,8 @@
             {% endif %}
         {% endwith %}
 
-        {% if request.endpoint not in noNavbarEndpoints %}
-        <nav class="navbar navbar-expand-md navbar-light bg-light justify-content-between">
-            <span class="navbar-brand">
-                LOGO HERE
-            </span>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            </ul>
-        </nav>
-        {% endif %}
+        {% block navbar %}
+        {% endblock %}
         <main>
             {% block main %}
             {% endblock %}
