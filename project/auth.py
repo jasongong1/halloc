@@ -36,6 +36,20 @@ def login_post():
         flash('Please check your login details and try again.', 'warning')
         return redirect(url_for('auth.login'))
 
+    # check if user has been authenticated
+    if not user.confirmed:
+        flash('Please confirm your UNSW email address', 'warning')
+
+        token = generate_confirmation_token(zid)
+        confirm_url = url_for('auth.confirm_email', token=token, _external=True)
+        try:
+            send_email(f'z{zid}@unsw.edu.au', "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
+        except:
+            flash('Failed to send email. Please contact support and try again later.')
+            return redirect(url_for('auth.register'))
+
+        return redirect(url_for('auth.confirm_message'))
+
     login_user(user, remember=remember)
     return redirect(url_for('main.home'))
 
@@ -48,7 +62,6 @@ def register_post():
     zid = request.form.get('zid')
     password = request.form.get('password')
     email = request.form.get('email')
-    remember = True if request.form.get('remember') else False
 
     user = User.query.filter_by(zid=zid).first()
 
@@ -74,40 +87,55 @@ def register_post():
         db.session.add(new_user_college_join)
     # END
 
-
-    token = generate_confirmation_token(unsw_email_address)
+    token = generate_confirmation_token(zid)
 
     confirm_url = url_for('auth.confirm_email', token=token, _external=True)
-    send_email(unsw_email_address, "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
+    try:
+        send_email(unsw_email_address, "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
+    except:
+        flash('Failed to send email, account not registered. Please contact support and try again later.')
+        return redirect(url_for('auth.register'))
 
+    flash('A confirmation link has been sent via email.', 'success')
+    
     db.session.add(new_user)
     db.session.commit()
-
-    login_user(new_user, remember=remember)
-    flash('A confirmation email has been sent via email.', 'success')
     
-    return redirect(url_for('main.home'))
+    return redirect(url_for('auth.confirm_message'))
 
 @auth.route('/confirm/<token>')
-@login_required
 def confirm_email(token):
     try:
-        email = confirm_token(token)
+        zid = confirm_token(token)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
-    user = User.query.filter_by(zid=current_user.zid).first_or_404()
+        return redirect(url_for('auth.login'))
+    if not zid:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('auth.login'))
+    user = User.query.filter_by(zid=zid).first_or_404()
+    if not user:
+        flash('Account creation failed, please try again.', 'danger')
+        return redirect(url_for('auth.register'))
     if user.confirmed:
         flash('Account already confirmed. Please login.', 'success')
+        return redirect(url_for('auth.login'))
     else:
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('auth.login'))
+        login_user(user)
+        return redirect(url_for('main.home'))
 
+@auth.route('/confirm_message')
+def confirm_message():
+    return render_template('confirm.html')
 
 @auth.route('/logout')
-@login_required
 def logout():
-    logout_user()
+    if current_user and current_user.is_authenticated:
+        logout_user()
+    else:
+        flash('Already logged out.', 'success')
     return redirect(url_for('auth.login'))

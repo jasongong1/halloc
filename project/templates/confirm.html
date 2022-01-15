@@ -1,9 +1,12 @@
 {% extends "layout.html" %}
 
 {% block main %}
+<div id="confirmation-message" class="d-flex justify-content-center text-center">
+    We have sent a confirmation link to your UNSW email address (even if you nominated an alternate email address).
+</div>
 <div class="d-flex justify-content-center text-center">
-    <div id="confirmation-message">
-        We have sent a verification email to your UNSW email address (even if you nominated an alternate email address).
-    </div>
+    <a class="no-text-decoration" href="login">
+        Back to login
+    </a>
 </div>
 {% endblock %}
