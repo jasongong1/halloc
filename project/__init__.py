@@ -17,7 +17,7 @@ app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = os.environ['APP_MAIL_USERNAME']
 app.config['MAIL_PASSWORD'] = os.environ['APP_MAIL_PASSWORD']
 
-app.config['MAIL_DEFAULT_SENDER'] = auth_email_address
+app.config['MAIL_DEFAULT_SENDER'] = os.environ['APP_MAIL_USERNAME']
 
 mail = Mail(app)
 
