@@ -1,5 +1,5 @@
 from itsdangerous import URLSafeTimedSerializer
-from project import app
+from flask import current_app as app
 
 def generate_confirmation_token(content):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])

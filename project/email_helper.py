@@ -1,4 +1,5 @@
-from project import app, mail
+from project import mail
+from flask import current_app as app
 from flask_mail import Message
 
 
