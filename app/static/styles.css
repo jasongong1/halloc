@@ -1,0 +1,54 @@
+#login-form {
+    margin: 20px;
+}
+#register-form {
+    margin: 20px;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    clip-path: inset(50%);
+    border: 0;
+}
+#form-signin {
+    padding: 20px;
+    width: 400px;
+}
+#form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+#form-signin .form-control:focus {
+    z-index: 2;
+}
+#form-signin button[type=submit] {
+    margin: 15px;
+}
+.form-control {
+    margin: -1px;
+}
+input[name="zid"].form-control {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+input[name="password"].form-control {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+#remember-checkbox {
+    margin-top: 20px;
+}
+.no-text-decoration {
+    text-decoration: none;
+}
+.navbar {
+    padding-left: 20px;
+    padding-right: 20px;
+}

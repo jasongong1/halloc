@@ -1,0 +1,410 @@
+:root {
+    --room-border-width: 2px;
+}
+  
+/* UNSW HALL */
+
+.hall-1 {
+    width: 100%;
+    height: 100%;
+}
+
+.hall-mid {
+    width: 100%;
+    height: 100%;
+}
+
+.hall-upper {
+    width: 100%;
+    height: 100%;
+}
+
+/* FLOOR-TYPE STYLE (lvls {1}, {2,3,4,5}, {6,7} are different) */
+
+/* HALL WEST CLUSTERS */
+.floor-map-hall--cluster-west {
+    background-color: red;
+    grid-column : 1 / 17;
+    display: grid;
+}
+
+.floor-map-hall--cluster-west.floor-map-hall--lv-1 {
+    grid-row: 5 / 17;
+}
+
+.floor-map-hall--cluster-west.floor-map-hall--lv-mid {
+    grid-row: 21 / 34;
+}
+
+/* HALL EAST CLUSTERS */
+.floor-map-hall--cluster-east {
+    background-color: lightgreen;
+    grid-column: 25 / 41;
+    display: grid;
+}
+.floor-map-hall--cluster-east.floor-map-hall--lv-1 {
+    grid-row: 5 / 17;
+}
+.floor-map-hall--cluster-east.floor-map-hall--lv-mid {
+    grid-row: 21 / 34;
+}
+
+/* HALL NORTH CLUSTERS */
+.floor-map-hall--cluster-north {
+    background-color: coral;
+    display: grid;
+}
+
+.floor-map-hall--cluster-north.floor-map-hall--lv-mid {
+    grid-column: 15 / 27;
+    grid-row: 1 / 21;
+}
+
+.floor-map-hall--cluster-north.floor-map-hall--lv-upper {
+    grid-row: 1 / 21;
+    grid-column: 1 / 13;
+}
+
+/* HALL FLOOR LOBBIES */
+.floor-map-hall--floor-lobby {
+    background-color: blue;
+    display: grid;
+}
+.floor-map-hall--floor-lobby.floor-map-hall--lv-1 {
+    grid-column: 17 / 25;
+    grid-row: 5 / 15;
+}
+.floor-map-hall--floor-lobby.floor-map-hall--lv-mid {
+    grid-column: 17 / 25;
+    grid-row: 21 / 30;
+}
+.floor-map-hall--floor-lobby.floor-map-hall--lv-upper {
+    grid-column: 3 / 11;
+    grid-row: 21 / 30;
+}
+.floor-map-hall--lv-1.floor-map-hall--elevator-stairwell {
+    background-color: hotpink;
+    grid-row: 1 / 5;
+    grid-column: 16 / 26;
+    display: grid;
+}
+
+/* LV 1 ONLY - ELEVATOR, STAIRWELL */
+.floor-map-hall--lv-1.stairwell {
+    grid-row: 1 / 21;
+    grid-column: 28 / 48;
+}
+.floor-map-hall--lv-1.elevator {
+    grid-row: 1 / 16;
+    grid-column: 1 / 15;
+}
+.floor-map-hall--lv-1.breaker-box {
+    grid-row: 16 / 21;
+    grid-column: 1 / 15;
+}
+
+
+/* HALL RF ROOMS */
+
+.floor-map-hall--rf-room {
+    background-color: aquamarine;
+}
+
+.floor-map-hall--rf-room.floor-map-hall--lv-mid {
+    grid-row: 25 / 36;
+    grid-column: 19 / 23;
+}
+
+.floor-map-hall--rf-room.floor-map-hall--lv-upper {
+    grid-row: 25 / 36;
+    grid-column: 5 / 9;
+}
+
+/* NORTH, EAST, WEST CLUSTER STYLES - COMMON BETWEEN ALL FLOOR TYPES */
+
+/* HALL EAST WEST CLUSTERS COMMON */
+.floor-map-hall--cluster-west.north-room, .floor-map-hall--cluster-east.north-room {
+    grid-row: 5 / 15;
+}
+
+.floor-map-hall--cluster-west.south-room, .floor-map-hall--cluster-east.south-room {
+    grid-row: 19 / 29;
+}
+
+.large-room-north-balcony {
+    grid-row: 1 / 41;
+}
+
+.large-room-south-balcony {
+    grid-row: 174 / 201;
+}
+
+.floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
+    grid-row: 21 / 29;
+}
+
+/* HALL WEST CLUSTERS */
+
+.floor-map-hall--cluster-west.large-room {
+    grid-column: 1 / 4;
+    grid-row: 1 / 31;
+    display: grid;
+}
+
+/* clockwise from southeast room */
+/* 1, 5 */
+.floor-map-hall--cluster-west.west-cluster-1, .floor-map-hall--cluster-west.west-cluster-5 {
+    grid-column: 8 / 10;
+}
+/* 2, 3 */
+.floor-map-hall--cluster-west.west-cluster-2, .floor-map-hall--cluster-west.west-cluster-3 {
+    grid-column: 4 / 6;
+}
+/* 4 */
+.floor-map-hall--cluster-west.west-cluster-4 {
+    grid-column: 6 / 8;
+}
+
+.floor-map-hall--cluster-west.west-cluster-left-bathroom {
+    grid-column: 6 / 7;
+}
+
+.floor-map-hall--cluster-west.west-cluster-right-bathroom {
+    grid-column: 7 / 8;
+}
+
+/* HALL EAST CLUSTERS */
+
+.floor-map-hall--cluster-east.large-room {
+    grid-column: 13 / 21;
+    grid-row: 1 / 31;
+    display: grid;
+}
+
+.floor-map-hall--cluster-east.large-room-south-balcony {
+    grid-column: 42 / 197;
+}
+
+.floor-map-hall--cluster-east.large-room-north-balcony {
+    grid-column: 1 / 197;
+}
+
+.floor-map-hall--cluster-east.large-room-south-balcony.mask {
+    border-style: solid;
+    border-color: red green yellow blue;
+    box-sizing: border-box;
+    border-width: var(--room-border-width);
+    transform: translate(calc(var(--room-border-width) * -1), var(--room-border-width));
+    
+    grid-column: 1 / 47;
+    grid-row: 121 / 201;
+}
+
+.floor-map-hall--cluster-east:hover .large-room-south-balcony.mask {
+    border-style: solid;
+}
+
+/* clockwise from northwest room */
+/* 4 */
+.floor-map-hall--cluster-east.south-room.east-cluster-4 {
+    grid-column: 11 / 15;
+}
+
+/* 1, 5 */
+.floor-map-hall--cluster-east.south-room.east-cluster-5, .floor-map-hall--cluster-east.north-room.east-cluster-1 {
+    grid-column: 1 / 5;
+}
+
+/* 2 */
+.floor-map-hall--cluster-east.north-room.east-cluster-2 {
+    grid-column: 5 / 9;
+}
+
+/* 3 */
+.floor-map-hall--cluster-east.north-room.east-cluster-3 {
+    grid-column: 9 / 13;
+}
+
+
+.floor-map-hall--cluster-east.east-cluster-left-bathroom {
+    grid-column: 5 / 8;
+}
+
+.floor-map-hall--cluster-east.east-cluster-right-bathroom {
+    grid-column: 8 / 11;
+}
+
+/* HALL NORTH CLUSTERS */
+
+.floor-map-hall--cluster-north.large-room {
+    grid-row: 1 / 24;
+    grid-column: 1 / 61;
+    display: grid;
+}
+
+.floor-map-hall--cluster-north.large-room-west-balcony {
+    grid-column: 1 / 27;
+    grid-row: 1 / 200;
+}
+
+.floor-map-hall--cluster-north.large-room-east-balcony {
+    grid-column: 175 / 201;
+    grid-row: 1 / 166;
+}
+
+.floor-map-hall--cluster-north.large-room-east-balcony.mask {
+    background-color: coral;
+    border-style: solid;
+    border-color: red green yellow blue;
+    box-sizing: border-box;
+    border-width: var(--room-border-width);
+    transform: translate(calc(var(--room-border-width) + 1px), var(--room-border-width));
+
+    grid-column: 112 / 201;
+    grid-row: 163 / 200;
+}
+
+.floor-map-hall--cluster-north.large-room:hover .mask {
+    border-color: red green yellow blue;
+}
+
+.floor-map-hall--cluster-north.west-room {
+    grid-column: 7 / 28;
+}
+
+.floor-map-hall--cluster-north.east-room {
+    grid-column: 34 / 55;
+}
+
+.floor-map-hall--cluster-north.north-cluster-2 {
+    grid-row: 24 / 38;
+}
+
+.floor-map-hall--cluster-north.north-cluster-1 {
+    grid-row: 56 / 71;
+}
+
+.floor-map-hall--cluster-north.north-cluster-3 {
+    grid-row: 19 / 33;
+}
+
+.floor-map-hall--cluster-north.north-cluster-4 {
+    grid-row: 33 / 48;
+}
+
+.floor-map-hall--cluster-north.north-cluster-5 {
+    grid-row: 48 / 62;
+}
+
+.floor-map-hall--cluster-north.north-cluster-6 {
+    grid-row: 62 / 77;
+}
+
+.floor-map-hall--cluster-north.north-cluster-north-bathroom {
+    grid-row: 38 / 47;
+    grid-column: 7 / 24;
+}
+
+.floor-map-hall--cluster-north.north-cluster-south-bathroom {
+    grid-row: 47 / 56;
+    grid-column: 7 / 24;
+}
+
+.floor-map-hall--cluster-north.stairwell {
+    grid-row: 77 / 91;
+}
+
+.floor-map-hall--cluster-north.elevator {
+    grid-row: 71 / 86;
+    grid-column: 7 / 21;
+}
+
+.floor-map-hall--cluster-north.breaker-box {
+    grid-row: 86 / 91;
+    grid-column: 7 / 21;
+}
+
+.draggable-room:hover {
+    transform: scale(1.03);
+    transition: .2s ease-in-out 0s;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.draggable-room:hover:not(.large-room) {
+    border-color: orchid;
+    outline-style: solid;
+    outline-width: var(--room-border-width);
+    outline-color: black;
+    z-index: 1;
+}
+
+.border-box {
+    box-sizing: border-box;
+}
+
+.bt2 {
+    border-top-style: solid;
+    border-top-width: var(--room-border-width);
+    border-color: black;
+}
+
+.br2 {
+    border-right-style: solid;
+    border-right-width: var(--room-border-width);
+    border-color: black;
+}
+
+.bb2 {
+    border-bottom-style: solid;
+    border-bottom-width: var(--room-border-width);
+    border-color: black;
+}
+
+.bl2 {
+    border-left-style: solid;
+    border-left-width: var(--room-border-width);
+    border-color: black;
+}
+
+.bt1 {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: black;
+}
+
+.br1 {
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: black;
+}
+
+.bb1 {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: black;
+}
+
+.bl1 {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-color: black;
+}
+
+.ba2 {
+    border-style: solid;
+    border-width: var(--room-border-width);
+    border-color: black;
+}
+
+.bsr2 {
+    box-shadow: var(--room-border-width) 0 0 0 black;
+}
+
+.bsl2 {
+    box-shadow: calc(var(--room-border-width) * -1) 0 0 0 black;
+}
+
+.bsb2 {
+    box-shadow: 0 var(--room-border-width) 0 0 black;
+}
