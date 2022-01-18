@@ -51,10 +51,10 @@ function create_sortable_table() {
             // if dragging within list
             if (evt.to == evt.from) {
                 preference_list_sortable.option("disabled", true);
-                document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000"; 
+                document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff0000";
                 if (evt.oldIndex != evt.newIndex) {
                     await delete_request(evt.item);
-                    await insert_request(evt.item, Math.min(evt.newIndex, num_preferences_in_table()) + 1);
+                    await insert_request(evt.item, evt.newIndex + 1);
                     await update_table('preference-table-body');
                 }
                 preference_list_sortable.option("disabled", false);
@@ -82,10 +82,11 @@ function create_sortable_table() {
             var college_name_cell = new_row.insertCell(-1);
             college_name_cell.innerHTML = evt.item.dataset.collegeName;
             header_cell_rank.classList.add("td-college-name");
-            // evt.item.replaceWith(new_row);
-            var new_row = 
-            await insert_request(new_row, Math.min(evt.newIndex, num_preferences_in_table()) + 1);
+            
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#ff00ff";
+            await insert_request(new_row, evt.newIndex + 1);
             await update_table('preference-table-body');
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00";
         }
     });
     return preference_list_sortable;
@@ -158,9 +159,11 @@ function create_preference_bin() {
         },
         animation: 100,
         onAdd: async function(evt) {
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#0f000f";
             await delete_request(evt.item);
             evt.item.parentNode.removeChild(evt.item);
             await update_table('preference-table-body');
+            document.getElementById("interactive-app-wrapper").style.backgroundColor = "#00ff00";
         }
     });
     return preference_bin_sortable;
@@ -212,8 +215,6 @@ async function update_table(table_id) {
 
         });
         table.dataset.numPreferences = data.preference_list.length;
-        var filler_row = table.insertRow(-1);
-        filler_row.id = "preference-table-body-height-filler";
         enforce_table_height();
     })
 }
