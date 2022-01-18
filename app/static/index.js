@@ -327,9 +327,13 @@ function create_map_swapper() {
 }
 
 function enforce_map_aspect_ratio() {
+    var current_map_displayed_id = current_map_displayed.get_temp_level();
+    if (!current_map_displayed_id) {
+        return;
+    }
     var displayed_map_el = document.getElementById(current_map_displayed.get_temp_level());
     var aspect_ratio_str = displayed_map_el.dataset.aspectRatio;
-    if (!aspect_ratio_str) {
+    if (!displayed_map_el || !aspect_ratio_str) {
         return;
     }
     var aspect_ratio_split = aspect_ratio_str.split('/');

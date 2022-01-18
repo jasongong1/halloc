@@ -50,6 +50,7 @@ class Room(db.Model):
     id: int
     room_name: str
     room_type: str
+    selectable: bool
     college_id: int
     floor_id: int
 
@@ -57,6 +58,7 @@ class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_name = db.Column(db.String, nullable=False)
     room_type = db.Column(db.String)
+    selectable = db.Column(db.Boolean, nullable=False, default=False)
     # preferences = db.relationship('Preference', backref='room', lazy=True)
     
     college_id = db.Column(db.Integer, db.ForeignKey('colleges.id'),

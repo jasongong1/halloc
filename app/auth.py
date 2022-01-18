@@ -2,10 +2,10 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import db
-from .models import User, College, UserCollegeJoin
-from .email_helper import send_email
-from .token_helper import generate_confirmation_token, confirm_token
+from app import db
+from app.models import User, College, UserCollegeJoin
+from app.email_helper import send_email
+from app.token_helper import generate_confirmation_token, confirm_token
 
 auth = Blueprint('auth', __name__)
 
