@@ -29,17 +29,17 @@ function create_hall_map(college) {
     college.college_floors.forEach((floor, idx) => {
         var map_parent = document.getElementById(`map-floor-${floor.id}`);
         if (idx == 0) {
-            draw_first_floor(map_parent, idx + 1, floor.floor_level);
+            draw_first_floor(map_parent, idx + 1, floor);
         }
         else if (1 <= idx && idx <= 4) {
-            draw_middle_floor(map_parent, idx + 1, floor.floor_level);
+            draw_middle_floor(map_parent, idx + 1, floor);
         }
         else {
-            draw_upper_floor(map_parent, idx + 1, floor.floor_level);
+            draw_upper_floor(map_parent, idx + 1, floor);
         }
     });
 
-    function draw_first_floor(parent, level, floor_name) {
+    function draw_first_floor(parent, level, floor) {
         if (!level || level > 1) {
             return;
         }
@@ -58,8 +58,8 @@ function create_hall_map(college) {
         var elevator_stairwell_only = document.createElement('DIV');
         elevator_stairwell_only.className = "floor-map-hall--elevator-stairwell floor-map-hall--lv-1 ba2";
                 
-        draw_west_cluster(cluster_west, 403, floor_name);
-        draw_east_cluster(cluster_east, 404, floor_name);
+        draw_west_cluster(cluster_west, 403, floor);
+        draw_east_cluster(cluster_east, 404, floor);
         draw_elevator_stairwell(elevator_stairwell_only);
 
         parent.appendChild(cluster_west);
@@ -68,7 +68,7 @@ function create_hall_map(college) {
         parent.appendChild(elevator_stairwell_only);
     }
 
-    function draw_middle_floor(parent, level, floor_name) {
+    function draw_middle_floor(parent, level, floor) {
         if (!level || !(1 <= level && level <= 5)) {
             return;
         }
@@ -92,9 +92,9 @@ function create_hall_map(college) {
         var rf_room = document.createElement('DIV');
         rf_room.className = "floor-map-hall--rf-room floor-map-hall--lv-mid ba2 border-box";
 
-        draw_west_cluster(cluster_west, cluster_num_west, floor_name);
-        draw_east_cluster(cluster_east, cluster_num_west + 2, floor_name);
-        draw_north_cluster(cluster_north, cluster_num_west + 3, floor_name);
+        draw_west_cluster(cluster_west, cluster_num_west, floor);
+        draw_east_cluster(cluster_east, cluster_num_west + 2, floor);
+        draw_north_cluster(cluster_north, cluster_num_west + 3, floor);
 
         parent.appendChild(cluster_west);
         parent.appendChild(cluster_east);
@@ -103,7 +103,7 @@ function create_hall_map(college) {
         parent.appendChild(rf_room);
     }
 
-    function draw_upper_floor(parent, level, floor_name) {
+    function draw_upper_floor(parent, level, floor) {
         if (!level || level <= 5) {
             return;
         }
@@ -123,14 +123,14 @@ function create_hall_map(college) {
         var rf_room = document.createElement('DIV');
         rf_room.className = "floor-map-hall--rf-room floor-map-hall--lv-upper ba2 border-box";
 
-        draw_north_cluster(cluster_north, cluster_num, floor_name);
+        draw_north_cluster(cluster_north, cluster_num, floor);
 
         parent.appendChild(cluster_north);
         parent.appendChild(floor_lobby);
         parent.appendChild(rf_room);
     }
 
-    function draw_west_cluster(parent, cluster_num, floor_name) {
+    function draw_west_cluster(parent, cluster_num, floor) {
         var large_room = document.createElement('DIV');
         large_room.className = "floor-map-hall--cluster-west large-room draggable-room ba2 border-box";
 
@@ -144,25 +144,34 @@ function create_hall_map(college) {
         large_room.appendChild(large_room_south_balcony);
         parent.appendChild(large_room);
 
-        for (let i = 1; i <= 5; i++) {
-            var room = document.createElement('DIV');
-            room.className = `floor-map-hall--cluster-west ${i <= 2 ? "south-room" : "north-room"} west-cluster-${i} draggable-room bt2 bb2 border-box`;
-            switch (i) {
+        floor.rooms.forEach((room) => {
+            var room_name_split = room.room_name.split('.');
+            if (room_name_split[0] != cluster_num || room_name_split.length < 2) {
+                return;
+            }
+            var room_div = document.createElement('DIV');
+            var room_num_in_cluster = parseInt(room_name_split[1]);
+            room_div.className = `floor-map-hall--cluster-west ${room_num_in_cluster <= 2 ? "south-room" : "north-room"} west-cluster-${room_num_in_cluster} draggable-room with-caption bt2 bb2 border-box`;
+            var description = document.createElement('DIV');
+            description.innerText = cluster_num + `.${room_num_in_cluster}` + (room.room_type ? "\n" + room.room_type : "");
+            description.classList.add('room-description');
+            room_div.appendChild(description);
+            switch (room_num_in_cluster) {
                 case 1:
-                    room.classList.add("bl2");
-                    room.classList.add("bsr2");
+                    room_div.classList.add("bl2");
+                    room_div.classList.add("bsr2");
                     break;
                 case 5:
                     break;
                 default:
-                    room.classList.add("br2");
+                    room_div.classList.add("br2");
                     break;
             }
-            room.dataset.roomName = cluster_num + `.${i}`;
-            room.dataset.floorName = floor_name;
-            room.dataset.collegeName = college.college_name;
-            parent.appendChild(room);
-        }
+            room_div.dataset.roomName = room.room_name;
+            room_div.dataset.floorName = floor.floor_level;
+            room_div.dataset.collegeName = college.college_name;
+            parent.appendChild(room_div);
+        });
 
         var bathroom_left = document.createElement('DIV');
         bathroom_left.className = "floor-map-hall--cluster-west south-bathroom west-cluster-left-bathroom bt2 bb2 br1 border-box";
@@ -176,7 +185,7 @@ function create_hall_map(college) {
         create_sortable_on_cluster(parent);
     }
 
-    function draw_east_cluster(parent, cluster_num, floor_name) {
+    function draw_east_cluster(parent, cluster_num, floor) {
         var large_room = document.createElement('DIV');
         large_room.className = "floor-map-hall--cluster-east large-room draggable-room ba2";
 
@@ -194,28 +203,37 @@ function create_hall_map(college) {
         large_room.appendChild(large_room_south_balcony_mask);
         parent.appendChild(large_room);
 
-        for (let i = 1; i <= 5; i++) {
-            var room = document.createElement('DIV');
-            room.className = `floor-map-hall--cluster-east ${i >= 4 ? "south-room" : "north-room"} east-cluster-${i} draggable-room bt2 bb2 border-box`;
-            switch (i) {
+        floor.rooms.forEach((room) => {
+            var room_name_split = room.room_name.split('.');
+            if (room_name_split[0] != cluster_num || room_name_split.length < 2) {
+                return;
+            }
+            var room_div = document.createElement('DIV');
+            var room_num_in_cluster = parseInt(room_name_split[1]);
+            room_div.className = `floor-map-hall--cluster-east ${room_num_in_cluster > 3 ? "south-room" : "north-room"} east-cluster-${room_num_in_cluster} draggable-room with-caption bt2 bb2 border-box`;
+            var description = document.createElement('DIV');
+            description.innerText = cluster_num + `.${room_num_in_cluster}` + (room.room_type ? "\n" + room.room_type : "");
+            description.classList.add('room-description');
+            room_div.appendChild(description);
+            switch (room_num_in_cluster) {
                 case 3:
                     break;
                 case 5:
-                    room.classList.add("bsl2");
-                    room.classList.add("br2");
+                    room_div.classList.add("bsl2");
+                    room_div.classList.add("br2");
                     break;
                 case 4:
-                    room.classList.add("bl2");
-                    room.style.zIndex = "1";
+                    room_div.classList.add("bl2");
+                    room_div.style.zIndex = "1";
                 default:
-                    room.classList.add("br2");
+                    room_div.classList.add("br2");
                     break;
             }
-            room.dataset.roomName = cluster_num + `.${i}`;
-            room.dataset.floorName = floor_name;
-            room.dataset.collegeName = college.college_name;
-            parent.appendChild(room);
-        }
+            room_div.dataset.roomName = room.room_name;
+            room_div.dataset.floorName = floor.floor_level;
+            room_div.dataset.collegeName = college.college_name;
+            parent.appendChild(room_div);
+        });
 
         var bathroom_left = document.createElement('DIV');
         bathroom_left.className = "floor-map-hall--cluster-east south-bathroom east-cluster-left-bathroom br1 bt2 bb2 border-box";
@@ -229,7 +247,7 @@ function create_hall_map(college) {
         create_sortable_on_cluster(parent);
     }
 
-    function draw_north_cluster(parent, cluster_num, floor_name) {
+    function draw_north_cluster(parent, cluster_num, floor) {
         var large_room = document.createElement('DIV');
         large_room.className = "floor-map-hall--cluster-north large-room draggable-room ba2 border-box";
         large_room.dataset.roomName = cluster_num;
@@ -248,25 +266,34 @@ function create_hall_map(college) {
         large_room.appendChild(large_room_east_balcony_mask);
         parent.appendChild(large_room);
 
-        for (let i = 1; i <= 6; i++) {
-            var room = document.createElement('DIV');
-            room.className = `floor-map-hall--cluster-north ${i <= 2 ? "west-room" : "east-room"} west-room north-cluster-${i} draggable-room border-box`;
-            switch (i) {
+        floor.rooms.forEach((room) => {
+            var room_name_split = room.room_name.split('.');
+            if (room_name_split[0] != cluster_num || room_name_split.length < 2) {
+                return;
+            }
+            var room_div = document.createElement('DIV');
+            var room_num_in_cluster = parseInt(room_name_split[1]);
+            room_div.className = `floor-map-hall--cluster-north ${room_num_in_cluster <= 2 ? "west-room" : "east-room"} north-cluster-${room_num_in_cluster} draggable-room with-caption bl2 br2 border-box`;
+            var description = document.createElement('DIV');
+            description.innerText = cluster_num + `.${room_num_in_cluster}` + (room.room_type ? "\n" + room.room_type : "");
+            description.classList.add('room-description');
+            room_div.appendChild(description);
+            switch (room_num_in_cluster) {
                 case 3:
-                    room.style.zIndex = "1";
+                    room_div.style.zIndex = "1";
                 case 1:
-                    room.classList.add("bt2");
+                    room_div.classList.add("bt2");
                 default:
-                    room.classList.add("bb2");
-                    room.classList.add("bl2");
-                    room.classList.add("br2");
+                    room_div.classList.add("bb2");
+                    room_div.classList.add("bl2");
+                    room_div.classList.add("br2");
                     break;
             }
-            room.dataset.roomName = cluster_num + `.${i}`;
-            room.dataset.floorName = floor_name;
-            room.dataset.collegeName = college.college_name;
-            parent.appendChild(room);
-        }
+            room_div.dataset.roomName = room.room_name;
+            room_div.dataset.floorName = floor.floor_level;
+            room_div.dataset.collegeName = college.college_name;
+            parent.appendChild(room_div);
+        });
 
         var bathroom_south = document.createElement('DIV');
         bathroom_south.className = "floor-map-hall--cluster-north north-cluster-south-bathroom bl2 br2 bt1 border-box";

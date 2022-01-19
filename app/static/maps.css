@@ -132,11 +132,11 @@
 }
 
 .large-room-north-balcony {
-    grid-row: 1 / 41;
+    grid-row: 1 / 35;
 }
 
 .large-room-south-balcony {
-    grid-row: 174 / 201;
+    grid-row: 180 / 201;
 }
 
 .floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
@@ -328,7 +328,7 @@
     transform: scale(1.03);
     transition: .2s ease-in-out 0s;
     cursor: pointer;
-    z-index: 0;
+    z-index: 1;
 }
 
 .draggable-room:hover:not(.large-room) {
@@ -336,7 +336,6 @@
     outline-style: solid;
     outline-width: var(--room-border-width);
     outline-color: black;
-    z-index: 1;
 }
 
 .border-box {

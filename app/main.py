@@ -24,7 +24,13 @@ def home():
             "college_floors": [{
                 'floor_level': floor.__dict__['floor_level'],
                 'college_id': floor.__dict__['college_id'],
-                'id': floor.__dict__['id']
+                'id': floor.__dict__['id'],
+                'rooms': [{
+                    'id': room.__dict__['id'],
+                    'room_name': room.__dict__['room_name'],
+                    'room_type': room.__dict__['room_type'],
+                    'selectable': room.__dict__['selectable'],
+                } for room in  Room.query.filter_by(floor_id=floor.__dict__['id']).all()]
             } for floor in Floor.query.filter_by(college_id=c.id).order_by(Floor.floor_level).all()]
         } for c in colleges]
     return render_template("index.html", preferences=preferences_list, colleges=colleges_list)

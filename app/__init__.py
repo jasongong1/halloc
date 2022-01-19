@@ -27,6 +27,7 @@ def create_app():
     app.config['SECRET_KEY'] = secret_key
     app.config['SECURITY_PASSWORD_SALT'] = security_password_salt
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rooms.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # initialize plugins
     db.init_app(app)

@@ -71,18 +71,9 @@ opacity: .6;
     width: 20%;
 }
 
-/* #preference-table-body-height-filler {
-    height: auto;
-    width: 98%;
-    background-color: lightseagreen;
-    overflow-y: visible;
-    position: absolute;
-} */
-
-/* #preferences-table thead tr {
-    display: block;
-} */
-
+#preference-bin tr {
+    display: none;
+}
 
 /* COLLEGE MAP */
 
@@ -130,6 +121,21 @@ opacity: .6;
     position: absolute;
     margin: auto;
     background-color: red;
+}
+
+.with-caption {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.room-description {
+    position: absolute;
+    width: 100%;
+    word-wrap: break-word;
+    line-height: 1em;
+    text-align: center;
+    background-color: lightcyan;
 }
 
 #map-floor-1 {
