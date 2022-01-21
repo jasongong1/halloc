@@ -14,6 +14,14 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
+    # MAIL SETTINGS
+        # OUTLOOK
+            # MAIL_SERVER = smtp-mail.outlook.com
+            # MAIL_PORT = 587
+        # GMAIL
+            # MAIL_SERVER = smtp.gmail.com
+            # MAIL_PORT = 465
+
     app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True

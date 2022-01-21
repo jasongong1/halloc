@@ -61,7 +61,7 @@ def register():
 def register_post():
     zid = request.form.get('zid')
     password = request.form.get('password')
-    email = request.form.get('email')
+    # email = request.form.get('email')
 
     user = User.query.filter_by(zid=zid).first()
 
@@ -69,11 +69,11 @@ def register_post():
         flash('user already exists', 'warning')
         return redirect(url_for('auth.register'))
 
-    unsw_email_address = f"z{zid}@unsw.edu.au"
+    # unsw_email_address = f"z{zid}@unsw.edu.au"
 
     new_user = User(
         zid=zid, 
-        email=unsw_email_address if not email else email,
+        # email=unsw_email_address if not email else email,
         hash=generate_password_hash(password, method='sha256')
     )
     
@@ -91,7 +91,7 @@ def register_post():
 
     confirm_url = url_for('auth.confirm_email', token=token, _external=True)
     try:
-        send_email(unsw_email_address, "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
+        send_email(f"z{zid}@unsw.edu.au", "Confirm your UNSW email", render_template('confirm_email.html', confirm_url=confirm_url))
     except:
         flash('Failed to send email, account not registered. Please contact support and try again later.')
         return redirect(url_for('auth.register'))
@@ -130,7 +130,15 @@ def confirm_email(token):
 
 @auth.route('/confirm_message')
 def confirm_message():
-    return render_template('confirm.html')
+    return render_template('verification_confirm.html')
+
+@auth.route('/passwordreset/<token>')
+def password_reset(token):
+    try:
+        zid = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('auth.login'))
 
 @auth.route('/logout')
 def logout():

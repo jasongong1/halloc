@@ -8,7 +8,7 @@ from app import db
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     zid = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, unique=True)
+    # email = db.Column(db.String, unique=True)
     hash = db.Column(db.String)
     username = db.Column(db.String)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
