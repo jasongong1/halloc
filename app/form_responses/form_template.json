@@ -1,0 +1,18 @@
+{
+    "zid": null,
+    "questions": [
+        {
+            "question": null,
+            "type": "text",
+            "response": null
+        },
+        {
+            "question": null,
+            "type": "mc",
+            "options": [
+                "choice1", "choice2"
+            ],
+            "response": null
+        }
+    ]
+}
