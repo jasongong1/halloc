@@ -34,11 +34,11 @@
 .form-control {
     margin: -1px;
 }
-input[name="zid"].form-control {
+input[name="zid"].form-control:not(.full-border) {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
-input[name="password"].form-control {
+input[name="password"].form-control:not(.full-border) {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
