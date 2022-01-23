@@ -139,6 +139,16 @@
     grid-row: 180 / 201;
 }
 
+.floor-map-hall--cluster-west.large-room-interior {
+    grid-row: 35 / 180;
+    grid-column: 1 / 201;
+}
+
+.floor-map-hall--cluster-east.large-room-interior {
+    grid-row: 35 / 140;
+    grid-column: 1 / 201;
+}
+
 .floor-map-hall--cluster-west.south-bathroom, .floor-map-hall--cluster-east.south-bathroom {
     grid-row: 21 / 29;
 }
@@ -165,6 +175,10 @@
     grid-column: 6 / 8;
 }
 
+.floor-map-hall--cluster-west.large-room-south-balcony, .floor-map-hall--cluster-west.large-room-north-balcony {
+    grid-column: 1 / 201;
+}
+
 .floor-map-hall--cluster-west.west-cluster-left-bathroom {
     grid-column: 6 / 7;
 }
@@ -182,26 +196,32 @@
 }
 
 .floor-map-hall--cluster-east.large-room-south-balcony {
-    grid-column: 42 / 197;
+    grid-column: 42 / 201;
 }
 
 .floor-map-hall--cluster-east.large-room-north-balcony {
-    grid-column: 1 / 197;
+    grid-column: 1 / 201;
 }
 
 .floor-map-hall--cluster-east.large-room-south-balcony.mask {
+    outline-width: var(--room-border-width);
+    outline-style: none;
+    border-width: var(--room-border-width) var(--room-border-width) 0 0;
     border-style: solid;
-    border-color: red green yellow blue;
-    box-sizing: border-box;
-    border-width: var(--room-border-width);
-    transform: translate(calc(var(--room-border-width) * -1), var(--room-border-width));
     
     grid-column: 1 / 47;
-    grid-row: 121 / 201;
+    grid-row: 125 / 201;
 }
 
-.floor-map-hall--cluster-east:hover .large-room-south-balcony.mask {
-    border-style: solid;
+.large-room:hover .large-room-south-balcony.mask {
+    outline-style: solid;
+    outline-color: lightgreen;
+}
+
+.floor-map-hall--cluster-east.large-room-south-balcony-in-cluster.mask {
+    grid-row: 29 / 31;
+    grid-column: 11 / 15;
+    background-color: bisque;
 }
 
 /* clockwise from northwest room */
@@ -253,19 +273,31 @@
 }
 
 .floor-map-hall--cluster-north.large-room-east-balcony.mask {
-    background-color: coral;
-    border-style: solid;
-    border-color: red green yellow blue;
     box-sizing: border-box;
-    border-width: var(--room-border-width);
-    transform: translate(calc(var(--room-border-width) + 1px), var(--room-border-width));
+    outline-width: var(--room-border-width);
+    outline-style: none;
+    border-width: var(--room-border-width) 0 0 var(--room-border-width);
+    border-style: solid;
+    outline-color: coral;
+    /* transform: translate(calc(var(--room-border-width) + 1px), var(--room-border-width)); */
 
-    grid-column: 112 / 201;
-    grid-row: 163 / 200;
+    grid-column: 115 / 201;
+    grid-row: 164 / 200;
 }
 
-.floor-map-hall--cluster-north.large-room:hover .mask {
-    border-color: red green yellow blue;
+.floor-map-hall--cluster-north.large-room.draggable-room:hover .large-room-east-balcony.mask {
+    outline-style: solid;
+}
+
+.floor-map-hall--cluster-north.large-room-south-balcony-in-cluster.mask {
+    grid-row: 19 / 33;
+    grid-column: 55 / 61;
+    background-color: bisque;
+}
+
+.floor-map-hall--cluster-north.large-room-interior {
+    grid-column: 27 / 175;
+    grid-row: 1 / 200;
 }
 
 .floor-map-hall--cluster-north.west-room {

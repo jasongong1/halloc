@@ -66,12 +66,16 @@ def insert_preference():
     if found_room_id:
         found_room_id = found_room_id.id
         existing_preference = Preference.query.filter(Preference.room_id==found_room_id, Preference.user_zid==current_user.zid).first()
+        # delete the old preference to be replaced by the new one
         if existing_preference:
             db.session.delete(existing_preference)
+        # ensure rank in request is consistent with database
+        highest_rank = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank.desc()).first()
+        highest_rank = highest_rank.rank if highest_rank else 0
         db.session.add(Preference(
             user_zid=current_user.zid,
             room_id=found_room_id,
-            rank=int(req_json['rank'])
+            rank=min(max(int(req_json['rank']),1), highest_rank + 1)
         ))
         db.session.commit()
         print(f"inserted room name {req_json['room_name'].strip()} in rank {int(req_json['rank'])}")
