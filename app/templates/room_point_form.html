@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-md navbar-light bg-light justify-content-between">
+    <span class="navbar-brand">
+        LOGO HERE
+    </span>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block main %}
+<form class='all_question_wrapper'>
+{% for question in form.questions %}
+    {% set question_loop = loop %}
+    <div class='single_question form-group'>
+        <label for="question-{{loop.index0}}">{{ question.question_text }}</label>
+        {% if question.type == 'textarea' %}
+        <textarea class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>{{question.response}}</textarea>
+        {% elif question.type == 'select' %}
+        <select class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>
+            {% for option in question.options %}
+            <option {{'selected' if question.response == option }}>{{ option }}</option>
+            {% endfor %}
+        </select>
+        {% elif question.type == 'selectmulti' %}
+        <select multiple class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>
+            {% for option in question.options %}
+            <option {{'selected' if question.response == option }}>{{ option }}</option>
+            {% endfor %}
+        </select>
+        {% elif question.type == 'radio' %}
+        <div class="radio-wrapper">
+            {% for option in question.options %}
+            <input type="radio" name="question-{{question_loop.index0}}" id="question-{{question_loop.index0}}-{{loop.index0}}" value="{{ option }}" {{'checked="checked"' if question.response == option }} data-idx = '{{question_loop.index0}}'>
+            <label for="question-{{question_loop.index0}}">{{ option }}</label>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+{% endfor %}
+</form>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src='/static/room_point_form.js'></script>
+{% endblock %}

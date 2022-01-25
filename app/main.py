@@ -1,8 +1,10 @@
+from asyncio import format_helpers
 from flask import Blueprint, json, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import query
-from . import db
-from .models import Preference, Room, College, Floor, UserCollegeJoin
+from app import db
+from app.models import Preference, Room, College, Floor, UserCollegeJoin
+from app.form_helper import create_form, get_form, save_form
 
 main = Blueprint('main', __name__)
 
@@ -65,17 +67,19 @@ def insert_preference():
     # if the room name is valid and not already preferenced by this user:
     if found_room_id:
         found_room_id = found_room_id.id
-        existing_preference = Preference.query.filter(Preference.room_id==found_room_id, Preference.user_zid==current_user.zid).first()
+        # ensure rank in request is consistent with database
+        valid_rank = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank.desc()).first()
+        valid_rank = valid_rank.rank + 1 if valid_rank else 1
+        if int(req_json['rank']) != valid_rank:
+            jsonify(success=False)
         # delete the old preference to be replaced by the new one
+        existing_preference = Preference.query.filter(Preference.room_id==found_room_id, Preference.user_zid==current_user.zid).first()
         if existing_preference:
             db.session.delete(existing_preference)
-        # ensure rank in request is consistent with database
-        highest_rank = Preference.query.filter_by(user_zid=current_user.zid).order_by(Preference.rank.desc()).first()
-        highest_rank = highest_rank.rank if highest_rank else 0
         db.session.add(Preference(
             user_zid=current_user.zid,
             room_id=found_room_id,
-            rank=min(max(int(req_json['rank']),1), highest_rank + 1)
+            rank=int(req_json['rank'])
         ))
         db.session.commit()
         print(f"inserted room name {req_json['room_name'].strip()} in rank {int(req_json['rank'])}")
@@ -102,3 +106,18 @@ def delete_all_preferences():
     Preference.query.filter_by(user_zid=current_user.zid).delete();
     db.session.commit()
     return jsonify(success=True)
+
+@main.route('/room_point_form', methods=['POST'])
+@login_required
+def room_point_form_post():
+    req_json = request.get_json()
+    form_dict = get_form(current_user.zid)
+    form_dict['questions'][int(req_json['question_idx'])]['response'] = req_json['response_str']
+    save_form(current_user.zid, form_dict)
+    return jsonify(success=True)
+
+@main.route('/room_point_form')
+@login_required
+def room_point_form():
+    form = get_form(current_user.zid)
+    return render_template("room_point_form.html", form=form)

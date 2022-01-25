@@ -1,38 +1,41 @@
 {
-    "zid": null,
+    "zid": "5360130",
     "questions": [
         {
             "question_text": "q1",
             "mandatory": false,
             "type": "textarea",
-            "response": null
+            "response": "test"
         },
         {
             "question_text": "q2",
             "mandatory": true,
             "type": "select",
             "options": [
-                "choice1", "choice2"
+                "choice1",
+                "choice2"
             ],
-            "response": null
+            "response": "choice1"
         },
         {
             "question_text": "q3",
             "mandatory": true,
             "type": "selectmulti",
             "options": [
-                "choice3", "choice4"
+                "choice3",
+                "choice4"
             ],
-            "response": null
+            "response": "choice4"
         },
         {
             "question_text": "q4",
             "mandatory": true,
             "type": "radio",
             "options": [
-                "radio1", "radio2"
+                "radio1",
+                "radio2"
             ],
-            "response": null
+            "response": "radio2"
         }
     ]
 }
