@@ -23,14 +23,23 @@ window.onload = function() {
     current_page.change_page_idx(0);
 };
 
-function add_event_listener_on_change(elem) {
+async function add_event_listener_on_change(elem) {
     elem.addEventListener('change', (evt) => {
         var save_indicator = document.querySelector(`.save-indicator[data-question-idx='${evt.target.dataset.questionIdx}'][data-page-idx='${evt.target.dataset.pageIdx}']`);
         console.log(save_indicator);
         save_indicator.textContent = ' - Saving...';
-        save_question_response(evt.target.dataset.pageIdx, evt.target.dataset.questionIdx, evt.target.value);
-        setTimeout(() => {save_indicator.textContent = ' - Saved!'}, 150);
-        setTimeout(() => {save_indicator.textContent = ''}, 500);
+        setTimeout(() => {
+            if (save_indicator.textContent != '') {
+                save_indicator.textContent = ' - Save failed.';
+                setTimeout(() => {save_indicator.textContent = ''}, 900);
+            }
+        }, 600);
+        save_question_response(evt.target.dataset.pageIdx, evt.target.dataset.questionIdx, evt.target.value).then(() => {
+            setTimeout(() => {save_indicator.textContent = ' - Saved!'}, 150);
+            setTimeout(() => {save_indicator.textContent = ''}, 500);
+        }).catch(() => {
+            return;
+        })
     });
 }
 
