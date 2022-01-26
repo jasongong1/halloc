@@ -37,7 +37,9 @@
         {% for question in page.questions %}
             {% set question_loop = loop %}
             <div class='single_question form-group'>
-                <label for="question-{{loop.index0}}">{{ question.question_text }}</label>
+                <label for="question-{{loop.index0}}">{{ question.question_text }}
+                    <span class="save-indicator" data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'></span>
+                </label>
                 {% if question.type == 'textarea' %}
                 <textarea class="form-control" id="question-{{question_loop.index0}}-page-{{page_loop.index0}}" {{ 'required' if question.mandatory }} data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'>{{question.response}}</textarea>
                 {% elif question.type == 'select' %}

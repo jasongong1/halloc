@@ -25,8 +25,13 @@ window.onload = function() {
 
 function add_event_listener_on_change(elem) {
     elem.addEventListener('change', (evt) => {
-        save_question_response(evt.target.dataset.pageIdx, evt.target.dataset.questionIdx, evt.target.value)
-    })
+        var save_indicator = document.querySelector(`.save-indicator[data-question-idx='${evt.target.dataset.questionIdx}'][data-page-idx='${evt.target.dataset.pageIdx}']`);
+        console.log(save_indicator);
+        save_indicator.textContent = ' - Saving...';
+        save_question_response(evt.target.dataset.pageIdx, evt.target.dataset.questionIdx, evt.target.value);
+        setTimeout(() => {save_indicator.textContent = ' - Saved!'}, 150);
+        setTimeout(() => {save_indicator.textContent = ''}, 500);
+    });
 }
 
 async function save_question_response(page_idx, question_idx, response_str) {
