@@ -1,10 +1,12 @@
+import time
 import json
 
 def create_form(zid):
     with open(f'app/form_responses/form_template.json') as template_file:
-        template_json = json.load(template_file)
-        template_json['zid'] = str(zid)
-        save_form(zid, template_file)
+        template_dict = json.load(template_file)
+        template_dict['zid'] = str(zid)
+        template_dict['last_edit'] = time.time()
+        save_form(zid, template_dict)
 
 def get_form(zid):
     try:

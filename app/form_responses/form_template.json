@@ -1,38 +1,85 @@
 {
     "zid": null,
-    "questions": [
+    "last_read_by_admin": 0,
+    "last_edit": 0,
+    "pages": [
         {
-            "question_text": "q1",
-            "mandatory": false,
-            "type": "textarea",
-            "response": null
+            "page_name": "page1",
+            "page_description": "a description of page1",
+            "questions": [
+                {
+                    "question_text": "q1",
+                    "mandatory": false,
+                    "type": "textarea",
+                    "response": null
+                },
+                {
+                    "question_text": "q2",
+                    "mandatory": true,
+                    "type": "select",
+                    "options": [
+                        "choice1", "choice2"
+                    ],
+                    "response": null
+                },
+                {
+                    "question_text": "q3",
+                    "mandatory": true,
+                    "type": "selectmulti",
+                    "options": [
+                        "choice3", "choice4"
+                    ],
+                    "response": null
+                },
+                {
+                    "question_text": "q4",
+                    "mandatory": true,
+                    "type": "radio",
+                    "options": [
+                        "radio1", "radio2"
+                    ],
+                    "response": null
+                }
+            ]
         },
         {
-            "question_text": "q2",
-            "mandatory": true,
-            "type": "select",
-            "options": [
-                "choice1", "choice2"
-            ],
-            "response": null
-        },
-        {
-            "question_text": "q3",
-            "mandatory": true,
-            "type": "selectmulti",
-            "options": [
-                "choice3", "choice4"
-            ],
-            "response": null
-        },
-        {
-            "question_text": "q4",
-            "mandatory": true,
-            "type": "radio",
-            "options": [
-                "radio1", "radio2"
-            ],
-            "response": null
+            "page_name": "page2",
+            "page_description": "a description of page2",
+            "questions": [
+                {
+                    "question_text": "q1",
+                    "mandatory": false,
+                    "type": "textarea",
+                    "response": null
+                },
+                {
+                    "question_text": "q2",
+                    "mandatory": true,
+                    "type": "select",
+                    "options": [
+                        "choice1", "choice2"
+                    ],
+                    "response": null
+                },
+                {
+                    "question_text": "q3",
+                    "mandatory": true,
+                    "type": "selectmulti",
+                    "options": [
+                        "choice3", "choice4"
+                    ],
+                    "response": null
+                },
+                {
+                    "question_text": "q4",
+                    "mandatory": true,
+                    "type": "radio",
+                    "options": [
+                        "radio1", "radio2"
+                    ],
+                    "response": null
+                }
+            ]
         }
     ]
 }

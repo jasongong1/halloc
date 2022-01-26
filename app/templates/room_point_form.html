@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block styles %}
+<link href="/static/room_point_form.css" rel="stylesheet">
 {% endblock %}
 
 {% block navbar %}
@@ -17,36 +18,54 @@
 {% endblock %}
 
 {% block main %}
-<form class='all_question_wrapper'>
-{% for question in form.questions %}
-    {% set question_loop = loop %}
-    <div class='single_question form-group'>
-        <label for="question-{{loop.index0}}">{{ question.question_text }}</label>
-        {% if question.type == 'textarea' %}
-        <textarea class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>{{question.response}}</textarea>
-        {% elif question.type == 'select' %}
-        <select class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>
-            {% for option in question.options %}
-            <option {{'selected' if question.response == option }}>{{ option }}</option>
-            {% endfor %}
-        </select>
-        {% elif question.type == 'selectmulti' %}
-        <select multiple class="form-control" id="question-{{question_loop.index0}}" {{ 'required' if question.mandatory }} data-idx = '{{question_loop.index0}}'>
-            {% for option in question.options %}
-            <option {{'selected' if question.response == option }}>{{ option }}</option>
-            {% endfor %}
-        </select>
-        {% elif question.type == 'radio' %}
-        <div class="radio-wrapper">
-            {% for option in question.options %}
-            <input type="radio" name="question-{{question_loop.index0}}" id="question-{{question_loop.index0}}-{{loop.index0}}" value="{{ option }}" {{'checked="checked"' if question.response == option }} data-idx = '{{question_loop.index0}}'>
-            <label for="question-{{question_loop.index0}}">{{ option }}</label>
-            {% endfor %}
+<div class='container page-select-bar'>
+    <div class='page-select-radio-wrapper'>
+    {% for page in form.pages %}
+        <div class='single-radio-wrapper'>
+        <input type="radio" name="select-page-radio" id="select-page-{{loop.index0}}" value="{{ loop.index0 }}" {{'checked=checked' if loop.index0 == 0 }}>
+        <label for="select-page-{{loop.index0}}" class="radio-label">{{ page.page_name }}</label>
         </div>
-        {% endif %}
+    {% endfor %}
+    </div>
+</div>
+<div class='all_page_wrapper'>
+{% for page in form.pages %}
+    <div class='question_page_wrapper container' data-page-idx='{{loop.index0}}' id='form-wrapper-page-{{loop.index0}}'>
+        <p>{{page.page_description}}</p>
+        {% set page_loop = loop %}
+        <form class='question_page' data-page-idx='{{loop.index0}}' id='form-page-{{loop.index0}}'>
+        {% for question in page.questions %}
+            {% set question_loop = loop %}
+            <div class='single_question form-group'>
+                <label for="question-{{loop.index0}}">{{ question.question_text }}</label>
+                {% if question.type == 'textarea' %}
+                <textarea class="form-control" id="question-{{question_loop.index0}}-page-{{page_loop.index0}}" {{ 'required' if question.mandatory }} data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'>{{question.response}}</textarea>
+                {% elif question.type == 'select' %}
+                <select class="form-control" id="question-{{question_loop.index0}}-page-{{page_loop.index0}}" {{ 'required' if question.mandatory }} data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'>
+                    {% for option in question.options %}
+                    <option {{'selected' if question.response == option }}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+                {% elif question.type == 'selectmulti' %}
+                <select multiple class="form-control" id="question-{{question_loop.index0}}-page-{{page_loop.index0}}" {{ 'required' if question.mandatory }} data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'>
+                    {% for option in question.options %}
+                    <option {{'selected' if question.response == option }}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+                {% elif question.type == 'radio' %}
+                <div class="radio-wrapper">
+                    {% for option in question.options %}
+                    <input type="radio" name="question-{{question_loop.index0}}-page-{{page_loop.index0}}" id="question-{{question_loop.index0}}-page-{{page_loop.index0}}-radio-{{loop.index0}}" value="{{ option }}" {{'checked=checked' if question.response == option }} data-question-idx='{{question_loop.index0}}' data-page-idx='{{page_loop.index0}}'>
+                    <label for="question-{{question_loop.index0}}-page-{{page_loop.index0}}-radio-{{loop.index0}}" class="radio-label">{{ option }}</label>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </form>
     </div>
 {% endfor %}
-</form>
+</div>
 {% endblock %}
 
 {% block script %}

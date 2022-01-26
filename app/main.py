@@ -2,6 +2,8 @@ from asyncio import format_helpers
 from flask import Blueprint, json, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import query
+import time
+
 from app import db
 from app.models import Preference, Room, College, Floor, UserCollegeJoin
 from app.form_helper import create_form, get_form, save_form
@@ -112,7 +114,8 @@ def delete_all_preferences():
 def room_point_form_post():
     req_json = request.get_json()
     form_dict = get_form(current_user.zid)
-    form_dict['questions'][int(req_json['question_idx'])]['response'] = req_json['response_str']
+    form_dict['pages'][int(req_json['page_idx'])]['questions'][int(req_json['question_idx'])]['response'] = req_json['response_str']
+    form_dict['last_edit'] = time.time()
     save_form(current_user.zid, form_dict)
     return jsonify(success=True)
 

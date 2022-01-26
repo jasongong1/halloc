@@ -1,0 +1,15 @@
+.question_page_wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+}
+
+input[type="radio"]:hover, .radio-label:hover {
+    cursor: pointer;
+}
+
+.page-select-radio-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
