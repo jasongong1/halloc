@@ -31,7 +31,6 @@ async function add_event_listener_on_change(elem) {
         setTimeout(() => {
             if (save_indicator.textContent != '') {
                 save_indicator.textContent = ' - Save failed.';
-                setTimeout(() => {save_indicator.textContent = ''}, 900);
             }
         }, 600);
         save_question_response(evt.target.dataset.pageIdx, evt.target.dataset.questionIdx, evt.target.value).then(() => {
