@@ -16,6 +16,6 @@ build/
 app/form_responses/*.json
 !app/form_responses/form_template.json
 
-# app/.env
+app/.env
 app/rooms.db
-# app/admins.txt
+admins.txt
