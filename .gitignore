@@ -12,3 +12,6 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+app/form_responses/*.json
+!app/form_responses/form_template.json
