@@ -1,4 +1,5 @@
 venv/
+.env
 
 *.pyc
 __pycache__/
@@ -15,3 +16,6 @@ build/
 
 app/form_responses/*.json
 !app/form_responses/form_template.json
+
+app/rooms.db
+app/admins.txt
