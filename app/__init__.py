@@ -4,13 +4,13 @@ from flask_mail import Mail
 from dotenv import load_dotenv
 import os
 
-from app.secret import secret_key, security_password_salt
-
 from flask_sqlalchemy import SQLAlchemy
 
 mail = Mail()
 login_manager = LoginManager()
 db = SQLAlchemy()
+
+from app import models
 
 def create_app():
 
@@ -43,6 +43,10 @@ def create_app():
 
     # initialize plugins
     db.init_app(app)
+    
+    with app.app_context():
+        db.create_all()
+
     mail.init_app(app)
 
     login_manager.login_view = 'auth.login'
