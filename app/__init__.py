@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_mail import Mail
+from dotenv import load_dotenv
 import os
 
 from app.secret import secret_key, security_password_salt
@@ -12,6 +13,9 @@ login_manager = LoginManager()
 db = SQLAlchemy()
 
 def create_app():
+
+    load_dotenv()
+
     app = Flask(__name__)
 
     # MAIL SETTINGS
@@ -32,8 +36,8 @@ def create_app():
 
     app.config['MAIL_DEFAULT_SENDER'] = os.environ['APP_MAIL_USERNAME']
 
-    app.config['SECRET_KEY'] = secret_key
-    app.config['SECURITY_PASSWORD_SALT'] = security_password_salt
+    app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+    app.config['SECURITY_PASSWORD_SALT'] = os.environ['SECURITY_PASSWORD_SALT']
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rooms.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

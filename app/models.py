@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DDL, event
-from sqlalchemy.orm import relationship
 from app import db
 
 class User(UserMixin, db.Model):
@@ -12,12 +10,13 @@ class User(UserMixin, db.Model):
     hash = db.Column(db.String)
     username = db.Column(db.String)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    admin = db.Column(db.Boolean, nullable=False, default=False)
 
     wam = db.Column(db.Float, default=0.0)
     room_points = db.Column(db.Float, default=0.0)
 
     preferences = db.relationship('Preference', backref='user', lazy=True)
-    
+
     def get_id(self):
            return (self.zid)
 
