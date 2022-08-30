@@ -7,27 +7,8 @@
         <form id="form-signin" method="POST" action="/login">
             <label for="input-zid" class="sr-only">Zid</label>
             <input class="form-control" name="zid" id="zid" placeholder="Zid" required="" autofocus="">
-            <label for="input-password" class="sr-only">Password</label>
-            <input class="form-control" type="password" name="password" id="password" required="" placeholder="Password" value="">
-            <div class="">
-                <label>
-                    <input type="checkbox" id="remember-checkbox">
-                    Remember me
-                </label>
-            </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
         </form>
-        Forgot password?
-        <a class="no-text-decoration" href="request_passwordreset">
-            Reset Password
-        </a>
-        <br>
-        <br>
-        <br>
-        New user?
-        <a class="no-text-decoration" href="register">
-            Register
-        </a>
     </div>
 </div>
 {% endblock %}

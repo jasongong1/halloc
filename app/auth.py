@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 from app import db
 from app.models import User, College, UserCollegeJoin
@@ -19,29 +20,35 @@ def login():
 @auth.route('/login', methods=['POST'])
 def login_post():
     # login code goes here
-    zid = request.form.get('zid')
-    password = request.form.get('password')
+    zid_str = request.form.get('zid')
 
-    if not (zid and password):
+    if not re.search(r'^z[0-9]{7}$', zid_str):
+        flash('Please check your login details and try again.', 'warning')
+        return redirect(url_for('auth.login'))
+    
+    zid_numeric = 0
+    try:
+        zid_numeric = int(zid_str[1:])
+    except:
+        flash('Please check your login details and try again.', 'warning')
+        return redirect(url_for('auth.login'))
+    if not (0 < zid_numeric <= 9999999):
         flash('Please check your login details and try again.', 'warning')
         return redirect(url_for('auth.login'))
 
-    remember = True if request.form.get('remember') else False
-
-    user = User.query.filter_by(zid=zid).first()
+    user = User.query.filter_by(zid=zid_numeric).first()
 
     # New user, register them
     if not user:
         new_user = User(
-            zid=zid, 
-            hash=generate_password_hash(password, method='sha256')
+            zid=zid_numeric, 
         )
         
         # GIVES PERMS FOR ALL USERS TO ACCESS ALL COLLEGES FOR DEMO ONLY
         colleges = College.query.all()
         for college in colleges:
             new_user_college_join = UserCollegeJoin(
-                user_zid=zid,
+                user_zid=zid_numeric,
                 college_id=college.id
             )
             db.session.add(new_user_college_join)
@@ -49,10 +56,10 @@ def login_post():
         db.session.add(new_user)
         db.session.commit()
         
-    token = generate_confirmation_token(zid)
+    token = generate_confirmation_token(zid_numeric)
     loginurl = url_for('auth.login_otp_token', token=token, _external=True)
     try:
-        send_email(f'z{zid}@unsw.edu.au', "Confirm your UNSW email", render_template('email/otp.html', otp_url=loginurl))
+        send_email(f'z{zid_numeric:07}@unsw.edu.au', "Confirm your UNSW email", render_template('email/otp.html', otp_url=loginurl))
     except:
         flash('Failed to send email. Please contact support and try again later.')
         return redirect(url_for('auth.login'))

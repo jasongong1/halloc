@@ -1,7 +1,7 @@
 window.onload = function() {
-    if (!!document.getElementById("form-signin")) {
-        document.getElementById("form-signin").onsubmit = format_zid;
-    }
+    // if (!!document.getElementById("form-signin")) {
+    //     document.getElementById("form-signin").onsubmit = format_zid;
+    // }
     document.getElementById('zid').addEventListener('input', enforce_zid_format);
 }
 
@@ -14,14 +14,12 @@ function enforce_zid_format(el) {
     }
     let zid_re = /^z[0-9]{0,7}/;
     let matches_arr = zid_re.exec(in_input_field);
-    console.log(matches_arr);
     document.getElementsByName('zid')[0].value = matches_arr ? matches_arr[0] : "";
 }
 
-function format_zid() {
-    let my_zid = document.getElementsByName('zid')[0].value;
-    if (/^z/.test(my_zid)) {
-        document.getElementsByName('zid')[0].value = my_zid.substring(1);
-    }
-    console.log(document.getElementsByName('zid')[0].value);
-}
+// function format_zid() {
+//     let my_zid = document.getElementsByName('zid')[0].value;
+//     if (/^z/.test(my_zid)) {
+//         document.getElementsByName('zid')[0].value = my_zid.substring(1);
+//     }
+// }
